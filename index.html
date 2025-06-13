@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOFTWARE GAMIFICATION - Main Portal</title>
+    <title>SOFTWARE GAMIFICATION - Portal Principal</title>
     <style>
         * {
             margin: 0;
@@ -35,8 +35,8 @@
         }
 
         .main-logo {
-            max-height: 120px;
-            max-width: 300px;
+            max-height: 200px;
+            max-width: 500px;
             object-fit: contain;
             filter: brightness(1.2);
             transition: all 0.3s ease;
@@ -262,18 +262,25 @@
             margin-top: auto;
         }
 
+        .footer-logo-section {
+            margin-bottom: 30px;
+        }
+
         .small-logo {
-            max-height: 60px;
-            max-width: 150px;
+            max-height: 100px;
+            max-width: 250px;
             object-fit: contain;
             opacity: 0.8;
             transition: all 0.3s ease;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(19, 79, 98, 0.2);
         }
 
         .small-logo:hover {
             opacity: 1;
             transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(19, 79, 98, 0.3);
         }
 
         .footer-text {
@@ -292,6 +299,11 @@
             .second-row {
                 grid-template-columns: 1fr;
                 gap: 25px;
+            }
+
+            .main-logo {
+                max-height: 150px;
+                max-width: 400px;
             }
         }
 
@@ -328,6 +340,11 @@
             }
             
             .main-logo {
+                max-height: 120px;
+                max-width: 300px;
+            }
+
+            .small-logo {
                 max-height: 80px;
                 max-width: 200px;
             }
@@ -352,6 +369,16 @@
             
             .oficina-section .section-buttons {
                 grid-template-columns: 1fr;
+            }
+
+            .main-logo {
+                max-height: 100px;
+                max-width: 250px;
+            }
+
+            .small-logo {
+                max-height: 60px;
+                max-width: 150px;
             }
         }
 
@@ -414,7 +441,11 @@
     <div class="container">
         <!-- Header with Main Logo -->
         <header class="header">
+<<<<<<< HEAD
             <img src="images\rzx_logo.png" alt="RZX Tecnologia" class="main-logo">
+=======
+            <img src="data:image/png;base64,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" alt="RZX Tecnología" class="main-logo">
+>>>>>>> 474aa3ca0915aa3e5306bb954009c0f3f8af66fb
             <h1 class="page-title">SOFTWARE GAMIFICATION</h1>
             <p class="page-subtitle">ENLACES DE SEGUIMIENTO EN TIEMPO REAL</p>
         </header>
@@ -430,12 +461,12 @@
                         <h2 class="section-title">OFICINA</h2>
                         <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para oficina</p>
                         <div class="section-buttons">
-                            <a href="#" class="section-button">DASHBOARD XPD</a>
+                            <a href="https://xpd.panamerican.rzxtecnologia.com.br/" class="section-button">DASHBOARD XPD</a>
                             <a href="#" class="section-button">GERENCIA</a>
                             <a href="https://wonderdatalabs.grafana.net/public-dashboards/cb6255c9ba9c4528b44816cfbc0fec59" class="section-button">WAR ROOM</a>
-                            <a href="#" class="section-button">ING.DE GUARDIA</a>
+                            <a href="#" class="section-button">ING. DE GUARDIA</a>
                             <a href="#" class="section-button">DIRECCIONAL</a>
-                            <a href="#" class="section-button">SENTINEL IA</a>
+                            <a href="http://drilling.agent.rzxtecnologia.com.br/" class="section-button">SENTINEL IA</a>
                         </div>
                     </div>
 
@@ -455,35 +486,40 @@
                 <div class="second-row">
                     <!-- PAE-002 Section -->
                     <div class="section-card pae-section">
-                        <div class="section-icon">⚙️</div>
+                        <div class="section-icon">🗼</div>
                         <h2 class="section-title">PAE-002</h2>
                         <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-002</p>
                         <div class="section-buttons">
                             <a href="https://wonderdatalabs.grafana.net/public-dashboards/d138867b20ca414a86f22e9cbb050b18" class="section-button">COMPANY MAN</a>
-                            <a href="#" class="section-button">PERFORADOR</a>
+                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/09b6d38f1f0147b0bf48fd7000b2e718" class="section-button">PERFORADOR</a>
                             <a href="#" class="section-button">SUPERINTENDENTE</a>
                         </div>
                     </div>
 
                     <!-- PAE-003 Section -->
                     <div class="section-card pae-section">
-                        <div class="section-icon">📊</div>
+                        <div class="section-icon">🗼</div>
                         <h2 class="section-title">PAE-003</h2>
                         <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-003</p>
                         <div class="section-buttons">
                             <a href="https://wonderdatalabs.grafana.net/public-dashboards/5a9b8862796b4b2381bd1089aa751e5d" class="section-button">COMPANY MAN</a>
-                            <a href="#" class="section-button">PERFORADOR</a>
+                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/d77fda4cb3e249b9963c00b0277cb661" class="section-button">PERFORADOR</a>
                             <a href="#" class="section-button">SUPERINTENDENTE</a>
                         </div>
                     </div>
 
                     <!-- PAE-005 Section -->
                     <div class="section-card pae-section">
-                        <div class="section-icon">🔧</div>
+                        <div class="section-icon">🗼</div>
                         <h2 class="section-title">PAE-005</h2>
                         <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-005</p>
                         <div class="section-buttons">
+<<<<<<< HEAD
                             <a href="#" class="section-button">PERFORADOR</a>
+=======
+                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/d3bdd50503064d9e9e331804a58e3714" class="section-button">COMPANY MAN</a>
+                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/4847257b5db940f7a70c1ee99d383eb7" class="section-button">PERFORADOR</a>
+>>>>>>> 474aa3ca0915aa3e5306bb954009c0f3f8af66fb
                             <a href="#" class="section-button">SUPERINTENDENTE</a>
                         </div>
                     </div>
@@ -493,8 +529,10 @@
 
         <!-- Footer with Small Logo -->
         <footer class="footer">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="Secondary Logo" class="small-logo">
-            <p class="footer-text">&copy; 2025 RZX Tecnologia. Todos los derechos reservados.</p>
+            <div class="footer-logo-section">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDIwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjMTM0ZjYyIiByeD0iMTAiLz4KPHN2ZyB4PSI1MCIgeT0iMjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAxMDAgNjAiPgo8cGF0aCBkPSJNMjAgMTBoNjB2NDBIMjB6IiBmaWxsPSIjNGE5MGE0Ii8+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMjUiIHI9IjMiIGZpbGw9IiNmZmZmZmYiLz4KPGNpcmNsZSBjeD0iNzAiIGN5PSIyNSIgcj0iMyIgZmlsbD0iI2ZmZmZmZiIvPgo8Y2lyY2xlIGN4PSI1MCIgY3k9IjQ1IiByPSI1IiBmaWxsPSIjZmZmZmZmIi8+CjwvdHNwYW4+CjwvdGV4dD4KPC9zdmc+" alt="Logo Secundario" class="small-logo">
+            </div>
+            <p class="footer-text">&copy; 2025 RZX Tecnología. Todos los derechos reservados.</p>
         </footer>
     </div>
 </body>
