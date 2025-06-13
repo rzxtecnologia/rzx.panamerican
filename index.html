@@ -74,12 +74,26 @@
             padding: 60px 0;
         }
 
-        .sections-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
+        .sections-container {
             max-width: 1200px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* First Row - OFICINA and IT */
+        .first-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Second Row - PAE sections */
+        .second-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
         }
 
         .section-card {
@@ -152,47 +166,29 @@
             color: #e2e8f0;
         }
 
+        /* Horizontal button layouts */
         .section-buttons {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 12px;
+            justify-content: center;
             margin-bottom: 20px;
         }
 
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .button-logo {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, #4a90a4, #6bb6c9);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
         .section-button {
-            display: block;
-            padding: 12px 20px;
+            display: inline-block;
+            padding: 10px 16px;
             background: linear-gradient(135deg, #134f62, #1e5f73);
             color: white;
             text-decoration: none;
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
             border: 1px solid rgba(255,255,255,0.1);
             position: relative;
             overflow: hidden;
-            width: 100%;
+            white-space: nowrap;
         }
 
         .section-button::before {
@@ -217,40 +213,45 @@
             border-color: rgba(255,255,255,0.2);
         }
 
-        .section-button:hover + .button-explanation {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .button-container:hover .button-logo {
-            transform: scale(1.1);
-            box-shadow: 0 4px 15px rgba(74, 144, 164, 0.4);
-        }
-
-        .button-explanation {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            opacity: 0.7;
-            transition: all 0.3s ease;
-            text-align: center;
-            line-height: 1.3;
-            margin-top: 5px;
-        }
-
         .section-button:active {
             transform: translateY(0);
         }
 
-        /* IT Section Special Styling */
+        /* Special styling for OFICINA section with more buttons */
+        .oficina-section .section-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .oficina-section .section-button {
+            font-size: 0.8rem;
+            padding: 8px 12px;
+        }
+
+        /* IT Section styling */
         .it-section .section-buttons {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
         }
 
         .it-section .section-button {
             font-size: 0.85rem;
             padding: 10px 12px;
+        }
+
+        /* PAE sections styling */
+        .pae-section .section-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .pae-section .section-button {
+            width: 100%;
+            font-size: 0.9rem;
+            padding: 12px 16px;
         }
 
         /* Footer with Small Logo */
@@ -282,14 +283,25 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .first-row {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .second-row {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
         @media (max-width: 768px) {
             .page-title {
                 font-size: 2rem;
             }
             
-            .sections-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
+            .sections-container {
+                gap: 30px;
                 padding: 0 10px;
             }
             
@@ -305,6 +317,10 @@
             
             .section-title {
                 font-size: 1.4rem;
+            }
+            
+            .oficina-section .section-buttons {
+                grid-template-columns: repeat(2, 1fr);
             }
             
             .it-section .section-buttons {
@@ -332,6 +348,10 @@
             
             .page-subtitle {
                 font-size: 1rem;
+            }
+            
+            .oficina-section .section-buttons {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -401,123 +421,72 @@
 
         <!-- Main Content with Sections -->
         <main class="main-content">
-            <div class="sections-grid">
-                <!-- OFICINA Section -->
-                <div class="section-card">
-                    <div class="section-icon">🏢</div>
-                    <h2 class="section-title">OFICINA</h2>
-                    <p class="section-desc">Gestión administrativa y recursos humanos</p>
-                    <div class="section-buttons">
-                        <div class="button-container">
-                            <div class="button-logo">👥</div>
-                            <a href="#" class="section-button">Recursos Humanos</a>
-                            <p class="button-explanation">Gestión de personal, nóminas y beneficios</p>
+            <div class="sections-container">
+                <!-- First Row: OFICINA and IT -->
+                <div class="first-row">
+                    <!-- OFICINA Section -->
+                    <div class="section-card oficina-section">
+                        <div class="section-icon">🏢</div>
+                        <h2 class="section-title">OFICINA</h2>
+                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para oficina</p>
+                        <div class="section-buttons">
+                            <a href="#" class="section-button">DASHBOARD XPD</a>
+                            <a href="#" class="section-button">GERENCIA</a>
+                            <a href="#" class="section-button">WAR ROOM</a>
+                            <a href="#" class="section-button">ING.DE GUARDIA</a>
+                            <a href="#" class="section-button">DIRECCIONAL</a>
+                            <a href="#" class="section-button">SENTINEL IA</a>
                         </div>
-                        <div class="button-container">
-                            <div class="button-logo">📋</div>
-                            <a href="#" class="section-button">Administración</a>
-                            <p class="button-explanation">Documentos, procesos y políticas internas</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">💰</div>
-                            <a href="#" class="section-button">Contabilidad</a>
-                            <p class="button-explanation">Finanzas, presupuestos y facturación</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">📅</div>
-                            <a href="#" class="section-button">Calendario</a>
-                            <p class="button-explanation">Horarios, reuniones y eventos corporativos</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">📊</div>
-                            <a href="#" class="section-button">Reportes</a>
-                            <p class="button-explanation">Métricas administrativas y KPIs</p>
+                    </div>
+
+                    <!-- RZX SOPORTE -->
+                    <div class="section-card it-section">
+                        <div class="section-icon">💻</div>
+                        <h2 class="section-title">RZX SOPORTE</h2>
+                        <p class="section-desc">XPD Soporte - Contacto 24H para ayuda y solicitudes de nuevas personalizaciones</p>
+                        <div class="section-buttons">
+                            <a href="#" class="section-button">OUTLOOK</a>
+                            <a href="#" class="section-button">TEAMS</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- PAE-002 Section -->
-                <div class="section-card">
-                    <div class="section-icon">⚙️</div>
-                    <h2 class="section-title">PAE-002</h2>
-                    <p class="section-desc">Procesos y automatización empresarial</p>
-                    <div class="section-buttons">
-                        <div class="button-container">
-                            <div class="button-logo">🔄</div>
-                            <a href="#" class="section-button">Automatización</a>
-                            <p class="button-explanation">Workflows y procesos automatizados</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">📈</div>
-                            <a href="#" class="section-button">Optimización</a>
-                            <p class="button-explanation">Mejora continua de procesos</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">🎯</div>
-                            <a href="#" class="section-button">Control</a>
-                            <p class="button-explanation">Monitoreo y seguimiento de KPIs</p>
+                <!-- Second Row: PAE Sections -->
+                <div class="second-row">
+                    <!-- PAE-002 Section -->
+                    <div class="section-card pae-section">
+                        <div class="section-icon">⚙️</div>
+                        <h2 class="section-title">PAE-002</h2>
+                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-002</p>
+                        <div class="section-buttons">
+                            <a href="#" class="section-button">COMPANY MAN</a>
+                            <a href="#" class="section-button">PERFORADOR</a>
+                            <a href="#" class="section-button">SUPERINTENDENTE</a>
                         </div>
                     </div>
-                </div>
 
-                <!-- PAE-003 Section -->
-                <div class="section-card">
-                    <div class="section-icon">📊</div>
-                    <h2 class="section-title">PAE-003</h2>
-                    <p class="section-desc">Análisis y reportes empresariales</p>
-                    <div class="section-buttons">
-                        <div class="button-container">
-                            <div class="button-logo">📋</div>
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/5a9b8862796b4b2381bd1089aa751e5d" class="section-button">Dashboard</a>
-                            <p class="button-explanation">Panel de control ejecutivo</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">📈</div>
-                            <a href="#" class="section-button">Analytics</a>
-                            <p class="button-explanation">Análisis avanzado de datos</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">📄</div>
-                            <a href="#" class="section-button">Informes</a>
-                            <p class="button-explanation">Reportes personalizados y exportables</p>
+                    <!-- PAE-003 Section -->
+                    <div class="section-card pae-section">
+                        <div class="section-icon">📊</div>
+                        <h2 class="section-title">PAE-003</h2>
+                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-003</p>
+                        <div class="section-buttons">
+                            <a href="#" class="section-button">COMPANY MAN</a>
+                            <a href="#" class="section-button">PERFORADOR</a>
+                            <a href="#" class="section-button">SUPERINTENDENTE</a>
                         </div>
                     </div>
-                </div>
 
-                <!-- PAE-005 Section -->
-                <div class="section-card">
-                    <div class="section-icon">🔧</div>
-                    <h2 class="section-title">PAE-005</h2>
-                    <p class="section-desc">Mantenimiento y soporte técnico</p>
-                    <div class="section-buttons">
-                        <div class="button-container">
-                            <div class="button-logo">🛠️</div>
-                            <a href="#" class="section-button">Mantenimiento</a>
-                            <p class="button-explanation">Programación y seguimiento de tareas</p>
+                    <!-- PAE-005 Section -->
+                    <div class="section-card pae-section">
+                        <div class="section-icon">🔧</div>
+                        <h2 class="section-title">PAE-005</h2>
+                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-005</p>
+                        <div class="section-buttons">
+                            <a href="#" class="section-button">COMPANY MAN</a>
+                            <a href="#" class="section-button">PERFORADOR</a>
+                            <a href="#" class="section-button">SUPERINTENDENTE</a>
                         </div>
-                        <div class="button-container">
-                            <div class="button-logo">🆘</div>
-                            <a href="#" class="section-button">Soporte</a>
-                            <p class="button-explanation">Mesa de ayuda y tickets</p>
-                        </div>
-                        <div class="button-container">
-                            <div class="button-logo">📋</div>
-                            <a href="#" class="section-button">Inventario</a>
-                            <p class="button-explanation">Control de equipos y recursos</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- IT Section -->
-                <div class="section-card it-section">
-                    <div class="section-icon">💻</div>
-                    <h2 class="section-title">IT</h2>
-                    <p class="section-desc">Departamento de Tecnología de la Información</p>
-                    <div class="section-buttons">
-                        <a href="#" class="section-button">Helpdesk</a>
-                        <a href="#" class="section-button">Inventario</a>
-                        <a href="#" class="section-button">Seguridad</a>
-                        <a href="#" class="section-button">Desarrollo</a>
                     </div>
                 </div>
             </div>
