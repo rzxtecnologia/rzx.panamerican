@@ -1,0 +1,15 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiRankingApp.Views.MainPage"
+             Title="Main Page">
+
+    <StackLayout Padding="20">
+        <Label Text="Welcome to the Maui Ranking App"
+               FontSize="24"
+               HorizontalOptions="Center" />
+        
+        <Button Text="View Rankings"
+                Command="{Binding NavigateToRankingCommand}"
+                HorizontalOptions="Center" />
+    </StackLayout>
+</ContentPage>

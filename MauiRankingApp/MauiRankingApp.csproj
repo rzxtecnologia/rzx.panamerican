@@ -1,0 +1,12 @@
+// filepath: c:\Users\thiag\rzx.panamerican\MauiRankingApp\MauiRankingApp.csproj
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-windows10.0.19041.0</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MauiRankingApp</RootNamespace>
+    <UseMaui>true</UseMaui>
+  </PropertyGroup>
+  <ItemGroup>
+    <MauiAsset Include="Resources\Fonts\*" />
+  </ItemGroup>
+</Project>

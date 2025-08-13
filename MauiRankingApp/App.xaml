@@ -1,0 +1,17 @@
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiRankingApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="LightBlue" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
