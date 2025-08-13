@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFTWARE GAMIFICATION - Ranking Perforadores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0c1d29;
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header with Main Logo */
+        .header {
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .main-logo {
+            max-height: 200px;
+            max-width: 500px;
+            object-fit: contain;
+            filter: brightness(1.2);
+            transition: all 0.3s ease;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .main-logo:hover {
+            transform: scale(1.05);
+            filter: brightness(1.4);
+        }
+
+        @keyframes glow {
+            from { filter: brightness(1.2) drop-shadow(0 0 10px rgba(255,255,255,0.2)); }
+            to { filter: brightness(1.4) drop-shadow(0 0 20px rgba(255,255,255,0.4)); }
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-top: 20px;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #ffffff, #4a90a4);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* Navigation */
+        .nav-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #134f62, #1e5f73);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #1e5f73, #2a7085);
+            box-shadow: 0 6px 20px rgba(19, 79, 98, 0.4);
+        }
+
+        /* Filters Section */
+        .filters-container {
+            max-width: 1000px;
+            margin: 0 auto 30px;
+            background: #283f4a;
+            border: 2px solid #134f62;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(19, 79, 98, 0.2);
+        }
+
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+        }
+
+        .filter-select, .filter-input {
+            padding: 10px 12px;
+            background: #1e5f73;
+            border: 1px solid #134f62;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus, .filter-input:focus {
+            outline: none;
+            border-color: #4a90a4;
+            box-shadow: 0 0 0 2px rgba(74, 144, 164, 0.2);
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #134f62, #4a90a4);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(19, 79, 98, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px 0 60px;
+        }
+
+        .ranking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ranking-header {
+            background: linear-gradient(135deg, #283f4a, #1e5f73);
+            border: 2px solid #134f62;
+            border-radius: 20px 20px 0 0;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(19, 79, 98, 0.2);
+        }
+
+        .ranking-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .ranking-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: #e2e8f0;
+        }
+
+        .ranking-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(19, 79, 98, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #4a90a4;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .ranking-table {
+            background: #283f4a;
+            border: 2px solid #134f62;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(19, 79, 98, 0.2);
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, #134f62, #1e5f73);
+            display: grid;
+            grid-template-columns: 70px 1fr 120px 100px 120px 100px 120px;
+            gap: 15px;
+            padding: 15px 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ranking-item {
+            display: grid;
+            grid-template-columns: 70px 1fr 120px 100px 120px 100px 120px;
+            gap: 15px;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(19, 79, 98, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            align-items: center;
+        }
+
+        .ranking-item:hover {
+            background: rgba(19, 79, 98, 0.2);
+            transform: translateX(5px);
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-position {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            color: #4a90a4;
+        }
+
+        .ranking-position.gold { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .ranking-position.silver { color: #c0c0c0; text-shadow: 0 0 10px rgba(192, 192, 192, 0.5); }
+        .ranking-position.bronze { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+
+        .driller-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .driller-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .driller-id {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            color: #94a3b8;
+        }
+
+        .rig-badge {
+            background: linear-gradient(135deg, #134f62, #4a90a4);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(19, 79, 98, 0.3);
+        }
+
+        .points-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4a90a4;
+            text-align: center;
+        }
+
+        .tasks-count {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            text-align: center;
+        }
+
+        .shift-indicator {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .shift-day { background: #ffd700; color: #000; }
+        .shift-night { background: #4a90a4; color: #fff; }
+        .shift-mixed { background: #9f7aea; color: #fff; }
+
+        .days-active {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            text-align: center;
+        }
+
+        /* Trophy Icons for Top 3 */
+        .trophy-icon {
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .trophy-icon.gold { color: #ffd700; }
+        .trophy-icon.silver { color: #c0c0c0; }
+        .trophy-icon.bronze { color: #cd7f32; }
+
+        /* Loading and Error States */
+        .loading-spinner, .error-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            color: #4a90a4;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(74, 144, 164, 0.3);
+            border-top: 4px solid #4a90a4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 1.1rem;
+            flex-direction: column;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #283f4a;
+            margin-top: auto;
+        }
+
+        .footer-logo-section {
+            margin-bottom: 30px;
+        }
+
+        .small-logo {
+            max-height: 80px;
+            max-width: 200px;
+            object-fit: contain;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(19, 79, 98, 0.2);
+        }
+
+        .small-logo:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(19, 79, 98, 0.3);
+        }
+
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            color: #94a3b8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .table-header,
+            .ranking-item {
+                grid-template-columns: 60px 1fr 100px 80px 100px;
+                gap: 10px;
+            }
+
+            .table-header .hide-mobile,
+            .ranking-item .hide-mobile {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .table-header,
+            .ranking-item {
+                grid-template-columns: 50px 1fr 80px;
+                gap: 8px;
+                padding: 12px 15px;
+            }
+
+            .main-logo {
+                max-height: 150px;
+                max-width: 375px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .filters-container {
+                padding: 20px 15px;
+            }
+
+            .main-logo {
+                max-height: 120px;
+                max-width: 300px;
+            }
+
+            .small-logo {
+                max-height: 60px;
+                max-width: 150px;
+            }
+        }
+
+        /* Background elements */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-shape {
+            position: absolute;
+            background: rgba(19, 79, 98, 0.1);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bg-shape:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .bg-shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .bg-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 40%;
+            left: 85%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+        <div class="bg-shape"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <img src="images/pae_logo_branco.png" alt="Pan America Energy" class="main-logo">
+            <h1 class="page-title">RANKING PERFORADORES</h1>
+            <p class="page-subtitle">SISTEMA AVANZADO DE CLASIFICACIÓN</p>
+        </header>
+
+        <!-- Navigation -->
+        <div class="nav-container">
+            <a href="index.html" class="back-button">← Volver al Portal Principal</a>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-container">
+            <h3 class="filters-title">🔍 FILTROS Y CONFIGURACIÓN</h3>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Período</label>
+                    <select id="period-filter" class="filter-select">
+                        <option value="week">Esta Semana</option>
+                        <option value="month" selected>Este Mes</option>
+                        <option value="quarter">Este Trimestre</option>
+                        <option value="year">Este Año</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Plataforma</label>
+                    <select id="rig-filter" class="filter-select">
+                        <option value="all">Todas las Plataformas</option>
+                        <option value="PAE-002">PAE-002</option>
+                        <option value="PAE-003">PAE-003</option>
+                        <option value="PAE-005">PAE-005</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Turno</label>
+                    <select id="shift-filter" class="filter-select">
+                        <option value="all">Todos los Turnos</option>
+                        <option value="day">Día</option>
+                        <option value="night">Noche</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Fecha Específica</label>
+                    <input type="date" id="date-filter" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <button id="apply-filters" class="filter-button">Aplicar Filtros</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="ranking-container">
+                <div class="ranking-header">
+                    <h2 class="ranking-title">🏆 CLASIFICACIÓN GENERAL</h2>
+                    <p class="ranking-subtitle" id="ranking-subtitle">Ranking mensual basado en promedio ponderado</p>
+                    
+                    <div class="ranking-stats" id="ranking-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-drillers">0</div>
+                            <div class="stat-label">Perforadores Activos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-tasks">0</div>
+                            <div class="stat-label">Tareas Completadas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="avg-points">0</div>
+                            <div class="stat-label">Promedio Puntos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="last-updated">--</div>
+                            <div class="stat-label">Última Actualización</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ranking-table">
+                    <div class="table-header">
+                        <div>POS</div>
+                        <div>PERFORADOR</div>
+                        <div>PLATAFORMA</div>
+                        <div class="hide-mobile">TURNO</div>
+                        <div>PUNTOS</div>
+                        <div class="hide-mobile">TAREAS</div>
+                        <div class="hide-mobile">DÍAS ACTIVOS</div>
+                    </div>
+
+                    <div id="ranking-list">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <span style="margin-left: 15px;">Cargando ranking...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo-section">
+                <img src="images/rzx_logo.png" alt="Logo Secundario" class="small-logo">
+            </div>
+            <p class="footer-text">&copy; 2025 RZX Tecnología. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sample comprehensive database structure
+        const sampleDatabase = {
+            drillers: [
+                { id: "D001", name: "Juan", surname: "Pérez", employeeId: "EMP001" },
+                { id: "D002", name: "Carlos", surname: "Rodriguez", employeeId: "EMP002" },
+                { id: "D003", name: "Miguel", surname: "González", employeeId: "EMP003" },
+                { id: "D004", name: "Roberto", surname: "Martinez", employeeId: "EMP004" },
+                { id: "D005", name: "Diego", surname: "Fernández", employeeId: "EMP005" },
+                { id: "D006", name: "Andrés", surname: "López", employeeId: "EMP006" },
+                { id: "D007", name: "Pablo", surname: "Sánchez", employeeId: "EMP007" },
+                { id: "D008", name: "Fernando", surname: "Torres", employeeId: "EMP008" }
+            ],
+            dailyRecords: [
+                // Recent records for January 2025
+                { drillerId: "D001", date: "2025-01-10", rig: "PAE-002", shift: "day", totalPoints: 95, tasksCompleted: 8 },
+                { drillerId: "D001", date: "2025-01-11", rig: "PAE-002", shift: "day", totalPoints: 88, tasksCompleted: 7 },
+                { drillerId: "D001", date: "2025-01-12", rig: "PAE-002", shift: "day", totalPoints: 92, tasksCompleted: 9 },
+                
+                { drillerId: "D002", date: "2025-01-10", rig: "PAE-003", shift: "night", totalPoints: 89, tasksCompleted: 6 },
+                { drillerId: "D002", date: "2025-01-11", rig: "PAE-003", shift: "night", totalPoints: 94, tasksCompleted: 8 },
+                { drillerId: "D002", date: "2025-01-13", rig: "PAE-003", shift: "night", totalPoints: 91, tasksCompleted: 7 },
+                
+                { drillerId: "D003", date: "2025-01-09", rig: "PAE-005", shift: "day", totalPoints: 87, tasksCompleted: 5 },
+                { drillerId: "D003", date: "2025-01-10", rig: "PAE-005", shift: "day", totalPoints: 93, tasksCompleted: 9 },
+                { drillerId: "D003", date: "2025-01-12", rig: "PAE-005", shift: "day", totalPoints: 96, tasksCompleted: 10 },
+                
+                { drillerId: "D004", date: "2025-01-08", rig: "PAE-002", shift: "night", totalPoints: 85, tasksCompleted: 6 },
+                { drillerId: "D004", date: "2025-01-09", rig: "PAE-002", shift: "night", totalPoints: 90, tasksCompleted: 7 },
+                { drillerId: "D004", date: "2025-01-11", rig: "PAE-002", shift: "night", totalPoints: 88, tasksCompleted: 8 },
+                
+                { drillerId: "D005", date: "2025-01-10", rig: "PAE-003", shift: "day", totalPoints: 84, tasksCompleted: 5 },
+                { drillerId: "D005", date: "2025-01-12", rig: "PAE-003", shift: "day", totalPoints: 89, tasksCompleted: 7 },
+                
+                { drillerId: "D006", date: "2025-01-09", rig: "PAE-005", shift: "night", totalPoints: 92, tasksCompleted: 8 },
+                { drillerId: "D006", date: "2025-01-11", rig: "PAE-005", shift: "night", totalPoints: 87, tasksCompleted: 6 },
+                { drillerId: "D006", date: "2025-01-13", rig: "PAE-005", shift: "night", totalPoints: 94, tasksCompleted: 9 },
+                
+                { drillerId: "D007", date: "2025-01-08", rig: "PAE-002", shift: "day", totalPoints: 91, tasksCompleted: 7 },
+                { drillerId: "D007", date: "2025-01-10", rig: "PAE-002", shift: "day", totalPoints: 86, tasksCompleted: 6 },
+                
+                { drillerId: "D008", date: "2025-01-11", rig: "PAE-003", shift: "night", totalPoints: 93, tasksCompleted: 8 },
+                { drillerId: "D008", date: "2025-01-12", rig: "PAE-003", shift: "night", totalPoints: 88, tasksCompleted: 7 }
+            ]
+        };
+
+        // Current filters
+        let currentFilters = {
+            period: 'month',
+            rig: 'all',
+            shift: 'all',
+            date: null
+        };
+
+        // Calculate weighted average for a period
+        function calculateWeightedAverage(records) {
+            if (records.length === 0) return 0;
+            
+            let totalWeightedPoints = 0;
+            let totalWeight = 0;
+            
+            records.forEach(record => {
+                const weight = record.tasksCompleted; // Weight by number of tasks
+                totalWeightedPoints += record.totalPoints * weight;
+                totalWeight += weight;
+            });
+            
+            return totalWeight > 0 ? Math.round(totalWeightedPoints / totalWeight) : 0;
+        }
+
+        // Filter records based on current filters
+        function filterRecords(records) {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth();
+            const currentWeek = getWeekNumber(now);
+            
+            return records.filter(record => {
+                const recordDate = new Date(record.date);
+                
+                // Period filter
+                let periodMatch = true;
+                switch (currentFilters.period) {
+                    case 'week':
+                        periodMatch = getWeekNumber(recordDate) === currentWeek && 
+                                    recordDate.getFullYear() === currentYear;
+                        break;
+                    case 'month':
+                        periodMatch = recordDate.getMonth() === currentMonth && 
+                                    recordDate.getFullYear() === currentYear;
+                        break;
+                    case 'quarter':
+                        const currentQuarter = Math.floor(currentMonth / 3);
+                        const recordQuarter = Math.floor(recordDate.getMonth() / 3);
+                        periodMatch = recordQuarter === currentQuarter && 
+                                    recordDate.getFullYear() === currentYear;
+                        break;
+                    case 'year':
+                        periodMatch = recordDate.getFullYear() === currentYear;
+                        break;
+                }
+                
+                // Rig filter
+                const rigMatch = currentFilters.rig === 'all' || record.rig === currentFilters.rig;
+                
+                // Shift filter
+                const shiftMatch = currentFilters.shift === 'all' || record.shift === currentFilters.shift;
+                
+                // Date filter
+                const dateMatch = !currentFilters.date || record.date === currentFilters.date;
+                
+                return periodMatch && rigMatch && shiftMatch && dateMatch;
+            });
+        }
+
+        // Get week number
+        function getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        // Generate ranking based on filtered data
+        function generateRanking() {
+            const filteredRecords = filterRecords(sampleDatabase.dailyRecords);
+            
+            // Group by driller
+            const drillerStats = {};
+            
+            filteredRecords.forEach(record => {
+                if (!drillerStats[record.drillerId]) {
+                    const driller = sampleDatabase.drillers.find(d => d.id === record.drillerId);
+                    drillerStats[record.drillerId] = {
+                        driller: driller,
+                        records: [],
+                        rigs: new Set(),
+                        shifts: new Set(),
+                        totalTasks: 0,
+                        activeDays: 0
+                    };
+                }
+                
+                drillerStats[record.drillerId].records.push(record);
+                drillerStats[record.drillerId].rigs.add(record.rig);
+                drillerStats[record.drillerId].shifts.add(record.shift);
+                drillerStats[record.drillerId].totalTasks += record.tasksCompleted;
+                drillerStats[record.drillerId].activeDays++;
+            });
+            
+            // Calculate final ranking
+            const ranking = Object.values(drillerStats).map(stats => {
+                const weightedAverage = calculateWeightedAverage(stats.records);
+                const mainRig = Array.from(stats.rigs)[0]; // Primary rig
+                const mainShift = getMostCommonShift(stats.records);
+                
+                return {
+                    driller: stats.driller,
+                    points: weightedAverage,
+                    totalTasks: stats.totalTasks,
+                    activeDays: stats.activeDays,
+                    mainRig: mainRig,
+                    mainShift: mainShift,
+                    rigs: Array.from(stats.rigs),
+                    shifts: Array.from(stats.shifts)
+                };
+            });
+            
+            // Sort by points (descending)
+            ranking.sort((a, b) => b.points - a.points);
+            
+            return ranking;
+        }
+
+        // Get most common shift for a driller
+        function getMostCommonShift(records) {
+            const shiftCounts = {};
+            records.forEach(record => {
+                shiftCounts[record.shift] = (shiftCounts[record.shift] || 0) + 1;
+            });
+            
+            return Object.keys(shiftCounts).reduce((a, b) => 
+                shiftCounts[a] > shiftCounts[b] ? a : b
+            );
+        }
+
+        // Display ranking
+        function displayRanking(ranking) {
+            const rankingList = document.getElementById('ranking-list');
+            
+            if (ranking.length === 0) {
+                rankingList.innerHTML = `
+                    <div class="error-message">
+                        <div>📊 No hay datos disponibles para los filtros seleccionados</div>
+                        <small style="margin-top: 10px; opacity: 0.7;">Intente ajustar los filtros o seleccionar un período diferente</small>
+                    </div>
+                `;
+                updateStats([], []);
+                return;
+            }
+
+            const rankingHTML = ranking.map((item, index) => {
+                const position = index + 1;
+                let positionClass = '';
+                let trophyIcon = '';
+                
+                if (position === 1) {
+                    positionClass = 'gold';
+                    trophyIcon = '<span class="trophy-icon gold">🥇</span>';
+                } else if (position === 2) {
+                    positionClass = 'silver';
+                    trophyIcon = '<span class="trophy-icon silver">🥈</span>';
+                } else if (position === 3) {
+                    positionClass = 'bronze';
+                    trophyIcon = '<span class="trophy-icon bronze">🥉</span>';
+                }
+
+                // Determine shift indicator
+                let shiftClass = 'shift-mixed';
+                let shiftText = 'Mixto';
+                if (item.shifts.length === 1) {
+                    if (item.mainShift === 'day') {
+                        shiftClass = 'shift-day';
+                        shiftText = 'Día';
+                    } else {
+                        shiftClass = 'shift-night';
+                        shiftText = 'Noche';
+                    }
+                }
+
+                return `
+                    <div class="ranking-item">
+                        ${trophyIcon}
+                        <div class="ranking-position ${positionClass}">#${position}</div>
+                        <div class="driller-info">
+                            <div class="driller-name">${item.driller.name} ${item.driller.surname}</div>
+                            <div class="driller-id">ID: ${item.driller.employeeId}</div>
+                        </div>
+                        <div class="rig-badge">${item.mainRig}</div>
+                        <div class="shift-indicator ${shiftClass} hide-mobile">${shiftText}</div>
+                        <div class="points-value">${item.points.toLocaleString()}</div>
+                        <div class="tasks-count hide-mobile">${item.totalTasks}</div>
+                        <div class="days-active hide-mobile">${item.activeDays}</div>
+                    </div>
+                `;
+            }).join('');
+
+            rankingList.innerHTML = rankingHTML;
+            
+            // Update statistics
+            const filteredRecords = filterRecords(sampleDatabase.dailyRecords);
+            updateStats(ranking, filteredRecords);
+        }
+
+        // Update statistics
+        function updateStats(ranking, records) {
+            document.getElementById('total-drillers').textContent = ranking.length;
+            document.getElementById('total-tasks').textContent = records.reduce((sum, r) => sum + r.tasksCompleted, 0);
+            
+            const avgPoints = ranking.length > 0 ? 
+                Math.round(ranking.reduce((sum, r) => sum + r.points, 0) / ranking.length) : 0;
+            document.getElementById('avg-points').textContent = avgPoints;
+            
+            const now = new Date();
+            document.getElementById('last-updated').textContent = 
+                now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Update subtitle based on filters
+        function updateSubtitle() {
+            const period = currentFilters.period;
+            const rig = currentFilters.rig;
+            const shift = currentFilters.shift;
+            
+            let subtitle = '';
+            
+            switch (period) {
+                case 'week': subtitle = 'Ranking semanal'; break;
+                case 'month': subtitle = 'Ranking mensual'; break;
+                case 'quarter': subtitle = 'Ranking trimestral'; break;
+                case 'year': subtitle = 'Ranking anual'; break;
+            }
+            
+            if (rig !== 'all') {
+                subtitle += ` - Plataforma ${rig}`;
+            }
+            
+            if (shift !== 'all') {
+                subtitle += ` - Turno ${shift === 'day' ? 'Día' : 'Noche'}`;
+            }
+            
+            if (currentFilters.date) {
+                const date = new Date(currentFilters.date);
+                subtitle = `Ranking del ${date.toLocaleDateString('es-ES')}`;
+            }
+            
+            subtitle += ' (promedio ponderado por tareas)';
+            
+            document.getElementById('ranking-subtitle').textContent = subtitle;
+        }
+
+        // Load and display ranking
+        function loadRanking() {
+            try {
+                const ranking = generateRanking();
+                displayRanking(ranking);
+                updateSubtitle();
+            } catch (error) {
+                console.error('Error loading ranking:', error);
+                document.getElementById('ranking-list').innerHTML = `
+                    <div class="error-message">
+                        <div>❌ Error al cargar los datos del ranking</div>
+                        <small style="margin-top: 10px; opacity: 0.7;">Error: ${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            currentFilters.period = document.getElementById('period-filter').value;
+            currentFilters.rig = document.getElementById('rig-filter').value;
+            currentFilters.shift = document.getElementById('shift-filter').value;
+            currentFilters.date = document.getElementById('date-filter').value || null;
+            
+            loadRanking();
+        }
+
+        // Auto-refresh functionality
+        function startAutoRefresh() {
+            // Refresh every 2 minutes (120000 ms)
+            setInterval(loadRanking, 120000);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set up event listeners
+            document.getElementById('apply-filters').addEventListener('click', applyFilters);
+            
+            // Auto-apply filters when changed
+            document.getElementById('period-filter').addEventListener('change', applyFilters);
+            document.getElementById('rig-filter').addEventListener('change', applyFilters);
+            document.getElementById('shift-filter').addEventListener('change', applyFilters);
+            document.getElementById('date-filter').addEventListener('change', applyFilters);
+            
+            // Initial load
+            loadRanking();
+            
+            // Start auto-refresh
+            startAutoRefresh();
+        });
+
+        // Handle back button
+        document.querySelector('.back-button').addEventListener('click', (e) => {
+            // Allow normal navigation
+        });
+    </script>
+</body>
+</html>
