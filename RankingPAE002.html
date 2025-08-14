@@ -490,47 +490,10 @@
         </footer>
     </div>
 
+    <!-- Incluir el gerenciador de datos -->
+    <script src="dataManager.js"></script>
+    
     <script>
-        // Sample JSON data structure
-        const sampleData = [
-            { name: "Juan", surname: "Pérez", rig: "PAE-002", points: 9850 },
-            { name: "Carlos", surname: "Rodriguez", rig: "PAE-003", points: 9920 },
-            { name: "Miguel", surname: "González", rig: "PAE-005", points: 9650 },
-            { name: "Roberto", surname: "Martinez", rig: "PAE-002", points: 9580 },
-            { name: "Diego", surname: "Fernández", rig: "PAE-003", points: 9440 },
-            { name: "Andrés", surname: "López", rig: "PAE-005", points: 9380 },
-            { name: "Pablo", surname: "Sánchez", rig: "PAE-002", points: 9320 },
-            { name: "Fernando", surname: "Torres", rig: "PAE-003", points: 9250 },
-            { name: "Javier", surname: "Ramírez", rig: "PAE-005", points: 9180 },
-            { name: "Sebastián", surname: "Castro", rig: "PAE-002", points: 9120 }
-        ];
-
-        // Function to load ranking data
-        async function loadRankingData() {
-            try {
-                // In a real implementation, you would fetch from your JSON file:
-                // const response = await fetch('data/ranking.json');
-                // const data = await response.json();
-                
-                // For demo purposes, using sample data
-                const data = sampleData;
-                
-                // Sort by points (descending)
-                data.sort((a, b) => b.points - a.points);
-                
-                displayRanking(data);
-            } catch (error) {
-                console.error('Error loading ranking data:', error);
-                document.getElementById('ranking-list').innerHTML = `
-                    <div class="error-message">
-                        ❌ Error al cargar los datos del ranking
-                        <br><br>
-                        <small>Verifique que el archivo ranking.json esté disponible</small>
-                    </div>
-                `;
-            }
-        }
-
         // Function to display ranking
         function displayRanking(data) {
             const rankingList = document.getElementById('ranking-list');
@@ -539,6 +502,8 @@
                 rankingList.innerHTML = `
                     <div class="error-message">
                         📊 No hay datos de ranking disponibles
+                        <br><br>
+                        <small>Verifique que el archivo CSV esté disponible</small>
                     </div>
                 `;
                 return;
@@ -577,17 +542,69 @@
             rankingList.innerHTML = rankingHTML;
         }
 
-        // Auto-refresh functionality (optional)
+        // Function to load ranking data from CSV
+        async function loadRankingData() {
+            try {
+                // Cargar datos del CSV usando el DataManager
+                if (window.dataManager.processedData.length === 0) {
+                    await window.dataManager.loadCSVData();
+                }
+                
+                // Obtener ranking simple
+                const data = window.dataManager.getSimpleRanking();
+                
+                // Mostrar el ranking
+                displayRanking(data);
+                
+                console.log('Ranking cargado exitosamente:', data.length, 'perforadores');
+                
+            } catch (error) {
+                console.error('Error loading ranking data:', error);
+                document.getElementById('ranking-list').innerHTML = `
+                    <div class="error-message">
+                        ❌ Error al cargar los datos del ranking
+                        <br><br>
+                        <small>Error: ${error.message}</small>
+                        <br><br>
+                        <small>Verifique que el archivo data/ranking_data.csv esté disponible</small>
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-refresh functionality
         function startAutoRefresh() {
             // Refresh every 5 minutes (300000 ms)
             setInterval(loadRankingData, 300000);
         }
 
         // Initialize the page
-        document.addEventListener('DOMContentLoaded', () => {
-            loadRankingData();
-            // Uncomment the line below to enable auto-refresh
-            // startAutoRefresh();
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Inicializar el sistema de datos
+                await window.initializeData();
+                
+                // Cargar el ranking inicial
+                await loadRankingData();
+                
+                // Iniciar auto-refresh
+                startAutoRefresh();
+                
+                // Iniciar auto-refresh de datos (cada 5 minutos)
+                window.dataManager.startAutoRefresh(5);
+                
+                console.log('Aplicación inicializada correctamente');
+                
+            } catch (error) {
+                console.error('Error initializing application:', error);
+                document.getElementById('ranking-list').innerHTML = `
+                    <div class="error-message">
+                        ❌ Error al inicializar la aplicación
+                        <br><br>
+                        <small>Error: ${error.message}</small>
+                    </div>
+                `;
+            }
         });
 
         // Handle back button functionality
