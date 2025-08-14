@@ -459,8 +459,8 @@
         <main class="main-content">
             <div class="ranking-container">
                 <div class="ranking-header">
-                    <h2 class="ranking-title">🏆 TOP PERFORADORES</h2>
-                    <p class="ranking-subtitle">Clasificación basada en rendimiento y eficiencia operacional</p>
+                    <h2 class="ranking-title">🏆 TOP PERFORADORES PAE-002</h2>
+                    <p class="ranking-subtitle">Clasificación PAE-002 - Últimos 15 días</p>
                 </div>
 
                 <div class="ranking-table">
@@ -550,13 +550,21 @@
                     await window.dataManager.loadCSVData();
                 }
                 
-                // Obtener ranking simple
-                const data = window.dataManager.getSimpleRanking();
+                // Configurar filtros específicos: últimos 15 días y solo PAE-002
+                const filters = {
+                    period: 'custom_15_days',
+                    rig: 'PAE-002',
+                    shift: 'all',
+                    date: null
+                };
+                
+                // Obtener ranking filtrado para PAE-002 de los últimos 15 días
+                const data = window.dataManager.getSimpleRankingFiltered(filters);
                 
                 // Mostrar el ranking
                 displayRanking(data);
                 
-                console.log('Ranking cargado exitosamente:', data.length, 'perforadores');
+                console.log('Ranking PAE-002 (últimos 15 días) cargado:', data.length, 'perforadores');
                 
             } catch (error) {
                 console.error('Error loading ranking data:', error);

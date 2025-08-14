@@ -275,6 +275,10 @@ class DataManager {
                     case 'year':
                         if (recordDate.getFullYear() !== now.getFullYear()) return false;
                         break;
+                    case 'custom_15_days':
+                        const fifteenDaysAgo = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000);
+                        if (recordDate < fifteenDaysAgo) return false;
+                        break;
                 }
             }
             
