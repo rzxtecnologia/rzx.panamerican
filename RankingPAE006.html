@@ -85,8 +85,8 @@
         <main class="main-content">
             <div class="ranking-container">
                 <div class="ranking-header">
-                    <h2 class="ranking-title">🏆 TOP TURNOS <PAE-005></PAE-005></h2>
-                    <p class="ranking-subtitle">Clasificación PAE-005 - Puntos Totales Últimos 15 días</p>
+                    <h2 class="ranking-title">🏆 TOP TURNOS <PAE-006></PAE-006></h2>
+                    <p class="ranking-subtitle">Clasificación PAE-006 - Puntos Totales Últimos 15 días</p>
                 </div>
 
                 <div class="ranking-table">
@@ -332,7 +332,7 @@
         async function loadRankingData() {
             try {
                 await window.dataManager.loadCSVData();
-                const data = window.dataManager.getRankingForRigLastDays('PAE-005', 15);
+                const data = window.dataManager.getRankingForRigLastDays('PAE-006', 15);
                 displayRanking(data);
             } catch (error) {
                 document.getElementById('ranking-list').innerHTML = `
