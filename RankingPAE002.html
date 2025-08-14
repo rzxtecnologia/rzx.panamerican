@@ -559,7 +559,7 @@
                 };
                 
                 // Obtener ranking filtrado para PAE-002 de los últimos 15 días
-                const data = window.dataManager.getSimpleRankingFiltered(filters);
+                const data = window.dataManager.getSimpleRankingWithFilters(filters);
                 
                 // Mostrar el ranking
                 displayRanking(data);

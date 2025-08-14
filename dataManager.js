@@ -127,24 +127,20 @@ class DataManager {
     // Dados de fallback em caso de erro
     getFallbackData() {
         return [
-            { id: "juan_perez", nombre: "Juan", apellido: "Pérez", nombreCompleto: "Juan Pérez", taladro: "PAE-002", pozo: "P001", fecha: new Date('2025-01-10'), guardia: "day", scoreGeneral: 85, scorePerforador: 90, numeroActividades: 8, puntosTotales: 175 },
-            { id: "carlos_rodriguez", nombre: "Carlos", apellido: "Rodriguez", nombreCompleto: "Carlos Rodriguez", taladro: "PAE-003", pozo: "P002", fecha: new Date('2025-01-10'), guardia: "night", scoreGeneral: 88, scorePerforador: 92, numeroActividades: 7, puntosTotales: 180 },
-            { id: "miguel_gonzalez", nombre: "Miguel", apellido: "González", nombreCompleto: "Miguel González", taladro: "PAE-005", pozo: "P003", fecha: new Date('2025-01-10'), guardia: "day", scoreGeneral: 82, scorePerforador: 88, numeroActividades: 9, puntosTotales: 170 },
-            { id: "roberto_martinez", nombre: "Roberto", apellido: "Martinez", nombreCompleto: "Roberto Martinez", taladro: "PAE-002", pozo: "P004", fecha: new Date('2025-01-09'), guardia: "night", scoreGeneral: 80, scorePerforador: 85, numeroActividades: 6, puntosTotales: 165 },
-            { id: "diego_fernandez", nombre: "Diego", apellido: "Fernández", nombreCompleto: "Diego Fernández", taladro: "PAE-003", pozo: "P005", fecha: new Date('2025-01-09'), guardia: "day", scoreGeneral: 78, scorePerforador: 82, numeroActividades: 7, puntosTotales: 160 }
+            { id: "juan_perez", nombre: "Juan", apellido: "Pérez", nombreCompleto: "Juan Pérez", taladro: "Taladro 1", pozo: "Pozo 1", fecha: "2023-01-01", guardia: "Guarda 1", scoreGeneral: 75, scorePerforador: 80, numeroActividades: 10, puntosTotales: 155 },
+            { id: "ana_garcia", nombre: "Ana", apellido: "García", nombreCompleto: "Ana García", taladro: "Taladro 2", pozo: "Pozo 2", fecha: "2023-01-02", guardia: "Guarda 2", scoreGeneral: 85, scorePerforador: 90, numeroActividades: 12, puntosTotales: 175 },
+            { id: "luis_lopez", nombre: "Luis", apellido: "López", nombreCompleto: "Luis López", taladro: "Taladro 3", pozo: "Pozo 3", fecha: "2023-01-03", guardia: "Guarda 3", scoreGeneral: 65, scorePerforador: 70, numeroActividades: 8, puntosTotales: 135 }
         ];
     }
 
-    // Obter ranking simples (para página 2)
+    // Obter ranking simples (para página 1)
     getSimpleRanking() {
-        if (this.processedData.length === 0) {
-            return this.getFallbackData();
-        }
+        const data = this.processedData.length === 0 ? this.getFallbackData() : this.processedData;
         
-        // Agrupar por perforador e calcular médias
+        // Agrupar por perforador e calcular totais
         const perforadorStats = {};
-        
-        this.processedData.forEach(record => {
+
+        data.forEach(record => {
             const key = record.id;
             if (!perforadorStats[key]) {
                 perforadorStats[key] = {
@@ -152,236 +148,91 @@ class DataManager {
                     apellido: record.apellido,
                     nombreCompleto: record.nombreCompleto,
                     taladro: record.taladro,
-                    totalPuntos: 0,
+                    totalPontos: 0,
                     totalRegistros: 0,
                     ultimaActividad: record.fecha
                 };
             }
-            
-            perforadorStats[key].totalPuntos += record.puntosTotales;
+
+            perforadorStats[key].totalPontos += record.puntosTotales;
             perforadorStats[key].totalRegistros += 1;
-            
+
             if (record.fecha && record.fecha > perforadorStats[key].ultimaActividad) {
                 perforadorStats[key].ultimaActividad = record.fecha;
                 perforadorStats[key].taladro = record.taladro; // Usar taladro mais recente
             }
         });
-        
+
+        // Converter para array
+        const ranking = Object.values(perforadorStats);
+
+        // Ordenar por pontos
+        ranking.sort((a, b) => b.totalPontos - a.totalPontos);
+
+        return ranking;
+    }
+
+    // Obter ranking simples com filtros (para página 2)
+    getSimpleRankingWithFilters(filters = {}) {
+        let data = this.processedData.length === 0 ? this.getFallbackData() : this.processedData;
+        // Aplicar filtros se existirem
+        if (filters && Object.keys(filters).length > 0) {
+            data = this.applyFilters(data, filters);
+        }
+
+        // Agrupar por perforador e calcular médias
+        const perforadorStats = {};
+
+        data.forEach(record => {
+            const key = record.id;
+            if (!perforadorStats[key]) {
+                perforadorStats[key] = {
+                    nombre: record.nombre,
+                    apellido: record.apellido,
+                    nombreCompleto: record.nombreCompleto,
+                    taladro: record.taladro,
+                    totalPontos: 0,
+                    totalRegistros: 0,
+                    ultimaActividad: record.fecha
+                };
+            }
+
+            perforadorStats[key].totalPontos += record.puntosTotales;
+            perforadorStats[key].totalRegistros += 1;
+
+            if (record.fecha && record.fecha > perforadorStats[key].ultimaActividad) {
+                perforadorStats[key].ultimaActividad = record.fecha;
+                perforadorStats[key].taladro = record.taladro; // Usar taladro mais recente
+            }
+        });
+
         // Converter para array e calcular pontos finais
         const ranking = Object.values(perforadorStats).map(stats => ({
             name: stats.nombre,
             surname: stats.apellido,
             rig: stats.taladro,
-            points: Math.round(stats.totalPuntos / stats.totalRegistros) // Média
+            points: Math.round(stats.totalPontos / stats.totalRegistros) // Média
         }));
-        
+
         // Ordenar por pontos
         ranking.sort((a, b) => b.points - a.points);
-        
+
         return ranking;
     }
 
-    // Obter ranking avançado (para página 1)
-    getAdvancedRanking(filters = {}) {
-        if (this.processedData.length === 0) {
-            return [];
-        }
-        
-        // Aplicar filtros
-        let filteredData = this.applyFilters(this.processedData, filters);
-        
-        // Agrupar por perforador
-        const perforadorStats = {};
-        
-        filteredData.forEach(record => {
-            const key = record.id;
-            if (!perforadorStats[key]) {
-                perforadorStats[key] = {
-                    driller: {
-                        id: key,
-                        name: record.nombre,
-                        surname: record.apellido,
-                        employeeId: key.toUpperCase()
-                    },
-                    records: [],
-                    taladros: new Set(),
-                    guardias: new Set(),
-                    totalActividades: 0,
-                    diasActivos: 0
-                };
-            }
-            
-            perforadorStats[key].records.push({
-                date: record.fecha ? record.fecha.toISOString().split('T')[0] : '',
-                rig: record.taladro,
-                shift: record.guardia,
-                totalPoints: record.puntosTotales,
-                tasksCompleted: record.numeroActividades
-            });
-            
-            perforadorStats[key].taladros.add(record.taladro);
-            perforadorStats[key].guardias.add(record.guardia);
-            perforadorStats[key].totalActividades += record.numeroActividades;
-            perforadorStats[key].diasActivos++;
-        });
-        
-        // Calcular ranking final
-        const ranking = Object.values(perforadorStats).map(stats => {
-            const weightedAverage = this.calculateWeightedAverage(stats.records);
-            const mainRig = Array.from(stats.taladros)[0];
-            const mainShift = this.getMostCommonShift(stats.records);
-            
-            return {
-                driller: stats.driller,
-                points: weightedAverage,
-                totalTasks: stats.totalActividades,
-                activeDays: stats.diasActivos,
-                mainRig: mainRig,
-                mainShift: mainShift,
-                rigs: Array.from(stats.taladros),
-                shifts: Array.from(stats.guardias)
-            };
-        });
-        
-        // Ordenar por pontos
-        ranking.sort((a, b) => b.points - a.points);
-        
-        return ranking;
-    }
-
-    // Aplicar filtros
+    // Aplicar filtros aos dados
     applyFilters(data, filters) {
         return data.filter(record => {
-            // Filtro de período
-            if (filters.period && record.fecha) {
-                const now = new Date();
-                const recordDate = record.fecha;
-                
-                switch (filters.period) {
-                    case 'week':
-                        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                        if (recordDate < weekAgo) return false;
-                        break;
-                    case 'month':
-                        if (recordDate.getMonth() !== now.getMonth() || 
-                            recordDate.getFullYear() !== now.getFullYear()) return false;
-                        break;
-                    case 'quarter':
-                        const currentQuarter = Math.floor(now.getMonth() / 3);
-                        const recordQuarter = Math.floor(recordDate.getMonth() / 3);
-                        if (recordQuarter !== currentQuarter || 
-                            recordDate.getFullYear() !== now.getFullYear()) return false;
-                        break;
-                    case 'year':
-                        if (recordDate.getFullYear() !== now.getFullYear()) return false;
-                        break;
-                    case 'custom_15_days':
-                        const fifteenDaysAgo = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000);
-                        if (recordDate < fifteenDaysAgo) return false;
-                        break;
-                }
-            }
-            
-            // Filtro de taladro
-            if (filters.rig && filters.rig !== 'all' && record.taladro !== filters.rig) {
-                return false;
-            }
-            
-            // Filtro de guardia
-            if (filters.shift && filters.shift !== 'all' && record.guardia !== filters.shift) {
-                return false;
-            }
-            
-            // Filtro de data específica
-            if (filters.date && record.fecha) {
-                const filterDate = new Date(filters.date);
-                const recordDate = record.fecha;
-                if (recordDate.toDateString() !== filterDate.toDateString()) {
+            for (const key in filters) {
+                if (filters[key] && record[key] !== filters[key]) {
                     return false;
                 }
             }
-            
             return true;
         });
     }
-
-    // Calcular média ponderada
-    calculateWeightedAverage(records) {
-        if (records.length === 0) return 0;
-        
-        let totalWeightedPoints = 0;
-        let totalWeight = 0;
-        
-        records.forEach(record => {
-            const weight = record.tasksCompleted || 1;
-            totalWeightedPoints += record.totalPoints * weight;
-            totalWeight += weight;
-        });
-        
-        return totalWeight > 0 ? Math.round(totalWeightedPoints / totalWeight) : 0;
-    }
-
-    // Obter guardia mais comum
-    getMostCommonShift(records) {
-        const shiftCounts = {};
-        records.forEach(record => {
-            shiftCounts[record.shift] = (shiftCounts[record.shift] || 0) + 1;
-        });
-        
-        return Object.keys(shiftCounts).reduce((a, b) => 
-            shiftCounts[a] > shiftCounts[b] ? a : b, 'day'
-        );
-    }
-
-    // Obter estatísticas gerais
-    getGeneralStats(data = null) {
-        const workingData = data || this.processedData;
-        
-        if (workingData.length === 0) {
-            return {
-                totalDrillers: 0,
-                totalTasks: 0,
-                avgPoints: 0,
-                lastUpdated: this.lastUpdated ? this.lastUpdated.toLocaleTimeString('es-ES', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                }) : '--'
-            };
-        }
-        
-        const uniqueDrillers = new Set(workingData.map(r => r.id)).size;
-        const totalTasks = workingData.reduce((sum, r) => sum + r.numeroActividades, 0);
-        const avgPoints = Math.round(workingData.reduce((sum, r) => sum + r.puntosTotales, 0) / workingData.length);
-        
-        return {
-            totalDrillers: uniqueDrillers,
-            totalTasks: totalTasks,
-            avgPoints: avgPoints,
-            lastUpdated: this.lastUpdated ? this.lastUpdated.toLocaleTimeString('es-ES', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            }) : '--'
-        };
-    }
-
-    // Auto-refresh dos dados
-    startAutoRefresh(intervalMinutes = 5) {
-        setInterval(() => {
-            this.loadCSVData();
-        }, intervalMinutes * 60 * 1000);
-    }
 }
 
-// Instância global do gerenciador de dados
-window.dataManager = new DataManager();
-
-// Função utilitária para inicializar os dados
-window.initializeData = async function() {
-    try {
-        await window.dataManager.loadCSVData();
-        return true;
-    } catch (error) {
-        console.error('Erro ao inicializar dados:', error);
-        return false;
-    }
-};
+// Exportar uma instância única do DataManager
+const dataManager = new DataManager();
+export default dataManager;
