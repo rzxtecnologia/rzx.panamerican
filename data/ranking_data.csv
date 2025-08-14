@@ -1,37 +1,37 @@
-﻿nombre,apellido,taladro,pozo,fecha,guardia,score general,score perforador,numero de atividades
-Juan,Pérez,PAE-002,P001,1/10/2025,day,85,90,8
-Carlos,Rodriguez,PAE-003,P002,1/10/2025,night,88,92,7
-Miguel,González,PAE-005,P003,1/10/2025,day,82,88,9
-Roberto,Martinez,PAE-002,P004,1/9/2025,night,80,85,6
-Diego,Fernández,PAE-003,P005,1/9/2025,day,78,82,7
-Juan,Pérez,PAE-002,P006,1/11/2025,day,87,89,9
-Carlos,Rodriguez,PAE-003,P007,1/11/2025,night,90,94,8
-Miguel,González,PAE-005,P008,1/11/2025,day,85,91,10
-Andrés,López,PAE-005,P009,1/10/2025,night,83,87,5
-Pablo,Sánchez,PAE-002,P010,1/10/2025,day,86,88,7
-Fernando,Torres,PAE-003,P011,1/9/2025,night,84,89,6
-Javier,Ramírez,PAE-005,P012,1/9/2025,day,81,86,8
-Sebastián,Castro,PAE-002,P013,1/11/2025,night,79,83,5
-Roberto,Martinez,PAE-002,P014,1/11/2025,night,82,87,7
-Diego,Fernández,PAE-003,P015,1/12/2025,day,80,84,6
-Andrés,López,PAE-005,P016,1/12/2025,night,85,89,8
-Pablo,Sánchez,PAE-002,P017,1/12/2025,day,88,91,9
-Fernando,Torres,PAE-003,P018,1/12/2025,night,86,90,7
-Juan,Pérez,PAE-002,P019,1/12/2025,day,89,93,10
-Carlos,Rodriguez,PAE-003,P020,1/12/2025,night,92,96,9
-Miguel,González,PAE-005,P021,1/12/2025,day,87,92,8
-Javier,Ramírez,PAE-005,P022,1/12/2025,day,83,88,6
-Sebastián,Castro,PAE-002,P023,1/12/2025,night,81,85,7
-Andrés,López,PAE-005,P024,1/13/2025,night,84,88,5
-Pablo,Sánchez,PAE-002,P025,1/13/2025,day,87,90,8
-Fernando,Torres,PAE-003,P026,1/13/2025,night,85,89,6
-Diego,Fernández,PAE-003,P027,1/13/2025,day,82,87,7
-Roberto,Martinez,PAE-002,P028,1/13/2025,night,83,86,6
-Juan,Pérez,PAE-002,P029,1/13/2025,day,91,94,9
-Carlos,Rodriguez,PAE-003,P030,1/13/2025,night,89,93,8
-Thiago, Soares, PAE-002, PCH-1234, 8/10/2025, day, 90, 95, 100
-Thiago, Soares, PAE-002, PCH-1234, 8/9/2025, night, 90, 30, 50
-Thiago, Soares, PAE-003, PCH-1234, 8/8/2025, day, 90, 95, 100
-Thiago, Soares, PAE-003, PCH-1234, 8/11/2025, night, 90, 30, 50
-Thiago, Soares, PAE-005, PCH-1234, 8/7/2025, day, 90, 95, 100
-Thiago, Soares, PAE-005, PCH-1234, 8/13/2025, night, 90, 30, 50
+﻿Nombre del equipo,Nombre,Apellido,Plataforma,Pozo,Fecha,Turno,Puntuación general del día,Número de actividades del día,Puntuación del perforador,Número de actividades del perforador,
+001,Juan,Pérez,PAE-002,P001,1/10/2025,day,85,50,,90,8
+002,Carlos,Rodriguez,PAE-003,P002,1/10/2025,night,88,50,,92,7
+003,Miguel,González,PAE-005,P003,1/10/2025,day,82,50,,88,9
+004,Roberto,Martinez,PAE-002,P004,1/9/2025,night,80,50,,85,6
+005,Diego,Fernández,PAE-003,P005,1/9/2025,day,78,50,,82,7
+006,Juan,Pérez,PAE-002,P006,1/11/2025,day,87,50,,89,9
+007,Carlos,Rodriguez,PAE-003,P007,1/11/2025,night,90,50,,94,8
+008,Miguel,González,PAE-005,P008,1/11/2025,day,85,50,,91,10
+009,Andrés,López,PAE-005,P009,1/10/2025,night,83,50,,87,5
+010,Pablo,Sánchez,PAE-002,P010,1/10/2025,day,86,50,,88,7
+011,Fernando,Torres,PAE-003,P011,1/9/2025,night,84,50,,89,6
+012,Javier,Ramírez,PAE-005,P012,1/9/2025,day,81,50,,86,8
+013,Sebastián,Castro,PAE-002,P013,1/11/2025,night,79,50,,83,5
+014,Roberto,Martinez,PAE-002,P014,1/11/2025,night,82,50,,87,7
+015,Diego,Fernández,PAE-003,P015,1/12/2025,day,80,50,,84,6
+016,Andrés,López,PAE-005,P016,1/12/2025,night,85,50,,89,8
+017,Pablo,Sánchez,PAE-002,P017,1/12/2025,day,88,50,,91,9
+018,Fernando,Torres,PAE-003,P018,1/12/2025,night,86,50,,90,7
+019,Juan,Pérez,PAE-002,P019,1/12/2025,day,89,50,,93,10
+020,Carlos,Rodriguez,PAE-003,P020,1/12/2025,night,92,50,,96,9
+021,Miguel,González,PAE-005,P021,1/12/2025,day,87,50,,92,8
+022,Javier,Ramírez,PAE-005,P022,1/12/2025,day,83,50,,88,6
+023,Sebastián,Castro,PAE-002,P023,1/12/2025,night,81,50,,85,7
+024,Andrés,López,PAE-005,P024,1/13/2025,night,84,50,,88,5
+025,Pablo,Sánchez,PAE-002,P025,1/13/2025,day,87,50,,90,8
+026,Fernando,Torres,PAE-003,P026,1/13/2025,night,85,50,,89,6
+027,Diego,Fernández,PAE-003,P027,1/13/2025,day,82,50,,87,7
+028,Roberto,Martinez,PAE-002,P028,1/13/2025,night,83,50,,86,6
+029,Juan,Pérez,PAE-002,P029,1/13/2025,day,91,50,,94,9
+030,Carlos,Rodriguez,PAE-003,P030,1/13/2025,night,89,50,,93,8
+Equipe B,Thiago,Soares,PAE-002,PCH-1234,1/13/2025,day,80,100,,85,25
+Equipe B,Thiago,Soares,PAE-002,PCH-1234,8/9/2025,day,80,50,,95,50
+Equipe B,Thiago,Soares,PAE-003,PCH-1234,8/8/2025,night,90,100,,85,100
+Equipe B,Thiago,Soares,PAE-003,PCH-1234,8/11/2025,night,80,100,,95,50
+Equipe B,Thiago,Soares,PAE-005,PCH-1234,8/12/2025,day,80,50,,85,50
+Equipe B,Thiago,Soares,PAE-005,PCH-1234,8/10/2025,night,90,50,,95,50
