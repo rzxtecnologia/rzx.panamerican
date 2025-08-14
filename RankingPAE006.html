@@ -110,7 +110,7 @@
                     <div class="table-header">
                         <div>POS</div>
                         <div>TURNO</div>
-                        <div>TOTAL GUARDIAS</div>
+                        <div>TOTAL&nbsp;GUARDIAS</div>
                         <div class="points-header">PONTOS TOTAIS</div>
                     </div>
 
@@ -267,17 +267,16 @@
                         return [];
                     }
 
-                    // Group by driller (nombre + apellido)
+                    // Group by turno (team name) instead of driller name
                     let rankingMap = new Map();
                     for (let row of filteredData) {
-                        let key = (row.nombre + "_" + row.apellido).toLowerCase().replace(/\s+/g, '_');
+                        let key = row.turno; // Use turno as the key
                         if (!rankingMap.has(key)) {
                             rankingMap.set(key, {
-                                name: row.nombre,
-                                surname: row.apellido,
+                                turno: row.turno,
                                 rig: row.plataforma,
-                                totalPoints: 0,
-                                totalActivities: 0,
+                                totalWeightedPoints: 0, // Sum of (puntuacion * activities) for each day
+                                totalActivities: 0,     // Sum of all activities across days
                                 totalShifts: 0,
                                 latestActivity: row.fecha
                             });
@@ -285,8 +284,8 @@
                         
                         let rec = rankingMap.get(key);
                         
-                        // Calculate weighted average: puntuaciondelperforador * numerodeactividadesdelperforador
-                        rec.totalPoints += (row.puntuaciondelperforador * row.numerodeactividadesdelperforador);
+                        // Add weighted points for this day: puntuaciondelperforador * numerodeactividadesdelperforador
+                        rec.totalWeightedPoints += (row.puntuaciondelperforador * row.numerodeactividadesdelperforador);
                         rec.totalActivities += row.numerodeactividadesdelperforador;
                         rec.totalShifts += 1;
                         
@@ -299,10 +298,9 @@
 
                     // Calculate final weighted average and convert to array
                     const rankingArr = Array.from(rankingMap.values()).map(rec => ({
-                        name: rec.name,
-                        surname: rec.surname,
+                        turno: rec.turno,
                         rig: rec.rig,
-                        weightedAverage: rec.totalActivities > 0 ? rec.totalPoints / rec.totalActivities : 0,
+                        weightedAverage: rec.totalActivities > 0 ? rec.totalWeightedPoints / rec.totalActivities : 0,
                         totalShifts: rec.totalShifts,
                         latestActivity: rec.latestActivity
                     }));
