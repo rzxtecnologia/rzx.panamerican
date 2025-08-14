@@ -25,8 +25,8 @@
         .ranking-title { font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
         .ranking-subtitle { font-size: 1rem; opacity: 0.8; color: #e2e8f0;}
         .ranking-table { background: #283f4a; border: 2px solid #134f62; border-top: none; border-radius: 0 0 20px 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(19, 79, 98, 0.2); }
-        .table-header { background: linear-gradient(135deg, #134f62, #1e5f73); display: grid; grid-template-columns: 80px 1fr 200px 120px; gap: 20px; padding: 20px 25px; font-weight: 700; font-size: 1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;}
-        .ranking-item { display: grid; grid-template-columns: 80px 1fr 200px 120px; gap: 20px; padding: 20px 25px; border-bottom: 1px solid rgba(19, 79, 98, 0.3); transition: all 0.3s ease; position: relative; align-items: center;}
+        .table-header { background: linear-gradient(135deg, #134f62, #1e5f73); display: grid; grid-template-columns: 80px 1fr 150px 150px; gap: 20px; padding: 20px 25px; font-weight: 700; font-size: 1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;}
+        .ranking-item { display: grid; grid-template-columns: 80px 1fr 150px 150px; gap: 20px; padding: 20px 25px; border-bottom: 1px solid rgba(19, 79, 98, 0.3); transition: all 0.3s ease; position: relative; align-items: center;}
         .ranking-item:hover { background: rgba(19, 79, 98, 0.2); transform: translateX(5px);}
         .ranking-item:last-child { border-bottom: none;}
         .ranking-position { font-size: 1.5rem; font-weight: 700; text-align: center; color: #4a90a4;}
@@ -38,6 +38,7 @@
         .driller-rig { background: linear-gradient(135deg, #134f62, #4a90a4); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; display: inline-block; width: fit-content; box-shadow: 0 2px 8px rgba(19, 79, 98, 0.3);}
         .driller-points { font-size: 1.4rem; font-weight: 700; color: #4a90a4; text-align: center; position: relative;}
         .driller-points::after { content: 'pts'; font-size: 0.7rem; opacity: 0.7; margin-left: 5px;}
+        .driller-shifts { font-size: 1.1rem; font-weight: 600; color: #ffffff; text-align: center;}
         .trophy-icon { position: absolute; left: -15px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; opacity: 0.8;}
         .trophy-icon.gold { color: #ffd700; }
         .trophy-icon.silver { color: #c0c0c0; }
@@ -51,8 +52,24 @@
         .small-logo { max-height: 80px; max-width: 200px; object-fit: contain; opacity: 0.8; transition: all 0.3s ease; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 4px 15px rgba(19, 79, 98, 0.2);}
         .small-logo:hover { opacity: 1; transform: scale(1.05); box-shadow: 0 6px 25px rgba(19, 79, 98, 0.3);}
         .footer-text { font-size: 0.9rem; opacity: 0.6; color: #94a3b8; }
-        @media (max-width: 768px) { .page-title { font-size: 2.2rem; } .table-header, .ranking-item { grid-template-columns: 60px 1fr 80px 80px; gap: 15px; padding: 15px 20px;} .ranking-position { font-size: 1.2rem;} .driller-name { font-size: 1rem;} .driller-rig { font-size: 0.75rem; padding: 3px 8px;} .driller-points { font-size: 1.1rem;} .main-logo { max-height: 150px; max-width: 375px; } }
-        @media (max-width: 480px) { .container { padding: 0 15px; } .page-title { font-size: 1.8rem; } .table-header, .ranking-item { grid-template-columns: 50px 1fr 70px; gap: 10px; padding: 12px 15px; } .table-header .points-header, .driller-points { display: none; } .driller-name { font-size: 0.9rem; } .main-logo { max-height: 120px; max-width: 300px; } .small-logo { max-height: 60px; max-width: 150px; } }
+        @media (max-width: 768px) { 
+            .page-title { font-size: 2.2rem; } 
+            .table-header, .ranking-item { grid-template-columns: 60px 1fr 100px 100px; gap: 15px; padding: 15px 20px;} 
+            .ranking-position { font-size: 1.2rem;} 
+            .driller-name { font-size: 1rem;} 
+            .driller-rig { font-size: 0.75rem; padding: 3px 8px;} 
+            .driller-points { font-size: 1.1rem;} 
+            .main-logo { max-height: 150px; max-width: 375px; } 
+        }
+        @media (max-width: 480px) { 
+            .container { padding: 0 15px; } 
+            .page-title { font-size: 1.8rem; } 
+            .table-header, .ranking-item { grid-template-columns: 50px 1fr 80px; gap: 10px; padding: 12px 15px; } 
+            .table-header .points-header, .driller-points { display: none; } 
+            .driller-name { font-size: 0.9rem; } 
+            .main-logo { max-height: 120px; max-width: 300px; } 
+            .small-logo { max-height: 60px; max-width: 150px; } 
+        }
         .bg-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden;}
         .bg-shape { position: absolute; background: rgba(19, 79, 98, 0.1); border-radius: 50%; animation: float 8s ease-in-out infinite; }
         .bg-shape:nth-child(1) { width: 120px; height: 120px; top: 10%; left: 5%; animation-delay: 0s;}
@@ -73,7 +90,7 @@
         <header class="header">
             <img src="images/pae_logo_branco.png" alt="Pan America Energy" class="main-logo">
             <h1 class="page-title">RANKING PERFORADORES</h1>
-            <p class="page-subtitle">CLASIFICACIÓN EN TIEMPO REAL POR PUNTOS</p>
+            <p class="page-subtitle">CLASSIFICAÇÃO EM TEMPO REAL POR PONTOS</p>
         </header>
 
         <!-- Navigation -->
@@ -85,18 +102,23 @@
         <main class="main-content">
             <div class="ranking-container">
                 <div class="ranking-header">
-                    <h2 class="ranking-title">🏆 TOP TURNOS <PAE-006></PAE-006></h2>
-                    <p class="ranking-subtitle">Clasificación PAE-006 - Puntos Totales Últimos 15 días</p>
+                    <h2 class="ranking-title">🏆 TOP TURNOS PAE-006</h2>
+                    <p class="ranking-subtitle">Classificação PAE-006 - Média Ponderada Últimos 15 dias</p>
                 </div>
 
                 <div class="ranking-table">
                     <div class="table-header">
                         <div>POS</div>
                         <div>TURNO</div>
-                        <div>PUNTOS TOTALES</div>
+                        <div>TOTAL GUARDIAS</div>
+                        <div class="points-header">PONTOS TOTAIS</div>
                     </div>
+
                     <div id="ranking-list">
-                        <div class="loading-spinner"><div class="spinner"></div></div>
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <span style="margin-left: 15px;">Cargando ranking...</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,144 +129,253 @@
             <div class="footer-logo-section">
                 <img src="images/rzx_logo.png" alt="Logo Secundario" class="small-logo">
             </div>
-            <p class="footer-text">&copy; 2026 RZX Tecnología. Todos los derechos reservados.</p>
+            <p class="footer-text">&copy; 2025 RZX Tecnología. Todos los derechos reservados.</p>
         </footer>
     </div>
 
     <!-- DataManager JS EMBEDDED AS MODULE-LIKE IN THIS FILE -->
     <script>
-(function() {
-    class DataManager {
-        constructor() {
-            this.rawData = [];
-            this.processedData = [];
-            this.csvPath = 'data/ranking_data.csv';
-        }
-
-        async loadCSVData() {
-            try {
-                const response = await fetch(this.csvPath);
-                if (!response.ok) throw new Error('CSV não disponível');
-                const csvText = await response.text();
-                this.rawData = this.parseCSV(csvText);
-                this.processedData = this.rawData;
-                return this.processedData;
-            } catch (e) {
-                throw new Error('Base de dados não disponível');
-            }
-        }
-
-        parseCSV(csvText) {
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-            const data = [];
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',').map(v => v.trim());
-                if (values.length < headers.length) continue;
-                const record = {};
-                headers.forEach((header, idx) => {
-                    record[header] = values[idx];
-                });
-                // Conversão de tipos
-                record['fecha'] = this.parseDate(record['fecha']);
-                record['puntuaciondelperforador'] = parseFloat(record['puntuaciondelperforador']) || 0;
-                record['numerodeactividadesdelperforador'] = parseFloat(record['numerodeactividadesdelperforador']) || 0;
-                data.push(record);
-            }
-            return data;
-        }
-
-        parseDate(dateString) {
-            if (!dateString) return null;
-            // Aceita DD/MM/YYYY ou MM/DD/YYYY ou YYYY-MM-DD
-            const parts = dateString.split('/');
-            if (parts.length === 3) {
-                // DD/MM/YYYY
-                return new Date(parts[2], parts[1] - 1, parts[0]);
-            }
-            if (dateString.includes('-')) {
-                return new Date(dateString);
-            }
-            return null;
-        }
-
-        // Retorna ranking para plataforma e últimos X dias, média ponderada
-        getRankingForRigLastDays(rig, days = 15) {
-            const now = new Date();
-            const cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
-            const filtered = this.processedData.filter(r =>
-                r['plataforma'] === rig &&
-                r['fecha'] && r['fecha'] >= cutoff
-            );
-            // Agrupa por nome+sobrenome
-            const perfStats = {};
-            filtered.forEach(r => {
-                const key = `${r['nombre']} ${r['apellido']}`;
-                if (!perfStats[key]) {
-                    perfStats[key] = {
-                        nombre: r['nombre'],
-                        apellido: r['apellido'],
-                        turno: r['turno'],
-                        totalPontos: 0,
-                        totalAtividades: 0
-                    };
+        // DataManager adapted as plain JS object and attached to window
+        (function() {
+            class DataManager {
+                constructor() {
+                    this.rawData = [];
+                    this.processedData = [];
+                    this.lastUpdated = null;
+                    this.csvPath = 'data/ranking_data.csv';
                 }
-                perfStats[key].totalPontos += r['puntuaciondelperforador'] * r['numerodeactividadesdelperforador'];
-                perfStats[key].totalAtividades += r['numerodeactividadesdelperforador'];
-            });
-            // Calcula média ponderada
-            const ranking = Object.values(perfStats)
-                .filter(p => p.totalAtividades > 0)
-                .map(p => ({
-                    nombre: p.nombre,
-                    apellido: p.apellido,
-                    turno: p.turno,
-                    pontos: Math.round(p.totalPontos / p.totalAtividades)
-                }))
-                .sort((a, b) => b.pontos - a.pontos);
-            return ranking;
-        }
-    }
-    window.dataManager = new DataManager();
-})();
+
+                async loadCSVData() {
+                    try {
+                        const response = await fetch(this.csvPath + '?' + Date.now()); // cachebusting
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        const csvText = await response.text();
+                        this.rawData = this.parseCSV(csvText);
+                        this.processedData = this.processRawData(this.rawData);
+                        this.lastUpdated = new Date();
+                        return this.processedData;
+                    } catch (error) {
+                        console.error('Error loading CSV:', error);
+                        throw new Error('Base de dados não disponível');
+                    }
+                }
+
+                parseCSV(csvText) {
+                    // Split lines and detect delimiter
+                    let lines = csvText.trim().split(/\r?\n/);
+                    if (lines.length < 2) throw new Error('CSV file is empty or invalid');
+                    
+                    let delimiter = (lines[0].includes(';') && !lines[0].includes(',')) ? ';' : ',';
+                    let headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
+                    
+                    // Expected columns based on your specification:
+                    // turno,nombre,apellido,plataforma,pozo,fecha,turno,puntuaciongeneraldeldia,numerodeactividadesdeldia,puntuaciondelperforador,numerodeactividadesdelperforador
+                    
+                    const data = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        let values = lines[i].split(delimiter).map(v => v.trim());
+                        if (values.length < headers.length || !values[1] || !values[2]) continue; // Skip invalid rows
+                        
+                        let obj = {
+                            turno: values[0] || "",
+                            nombre: values[1] || "",
+                            apellido: values[2] || "",
+                            plataforma: values[3] || "",
+                            pozo: values[4] || "",
+                            fecha: this.parseDateRaw(values[5]),
+                            turnoGuardia: values[6] || "", // Second turno column (shift type)
+                            puntuaciongeneraldeldia: parseFloat(values[7]) || 0,
+                            numerodeactividadesdeldia: parseInt(values[8]) || 0,
+                            puntuaciondelperforador: parseFloat(values[9]) || 0,
+                            numerodeactividadesdelperforador: parseInt(values[10]) || 0
+                        };
+                        data.push(obj);
+                    }
+                    return data;
+                }
+
+                processRawData(rawData) {
+                    return rawData.map(item => {
+                        const nombreCompleto = (item.nombre || "") + " " + (item.apellido || "");
+                        return {
+                            id: (item.nombre + "_" + item.apellido).toLowerCase().replace(/\s+/g, '_'),
+                            nombre: item.nombre || "",
+                            apellido: item.apellido || "",
+                            nombreCompleto: nombreCompleto,
+                            plataforma: item.plataforma || "",
+                            pozo: item.pozo || "",
+                            fecha: item.fecha,
+                            turno: item.turno || "",
+                            turnoGuardia: item.turnoGuardia || "",
+                            puntuaciongeneraldeldia: item.puntuaciongeneraldeldia || 0,
+                            numerodeactividadesdeldia: item.numerodeactividadesdeldia || 0,
+                            puntuaciondelperforador: item.puntuaciondelperforador || 0,
+                            numerodeactividadesdelperforador: item.numerodeactividadesdelperforador || 0
+                        }
+                    });
+                }
+
+                // Robust date parser for DD/MM/YYYY, YYYY-MM-DD, etc.
+                parseDateRaw(dateString) {
+                    if (!dateString) return null;
+                    dateString = dateString.trim();
+                    let d = null;
+                    
+                    // YYYY-MM-DD
+                    if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
+                        d = new Date(dateString.substr(0,10));
+                    }
+                    // DD/MM/YYYY
+                    else if (/^\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
+                        let [d1, m1, y1] = dateString.split("/");
+                        d = new Date(+y1, +m1 - 1, +d1);
+                    }
+                    // DD-MM-YYYY
+                    else if (/^\d{2}-\d{2}-\d{4}/.test(dateString)) {
+                        let [d1, m1, y1] = dateString.split("-");
+                        d = new Date(+y1, +m1 - 1, +d1);
+                    }
+                    // Try parsing directly if above fails
+                    if (!d || isNaN(d.getTime())) {
+                        d = new Date(dateString);
+                    }
+                    if (isNaN(d.getTime())) return null;
+                    
+                    // For filtering, we always use the date only (00:00)
+                    d.setHours(0,0,0,0);
+                    return d;
+                }
+
+                // Returns ranking array for the last <days> days, one rig, with weighted average calculation
+                getRankingForRigLastDays(rig, days = 15) {
+                    const now = new Date();
+                    now.setHours(0,0,0,0);
+                    const msInDay = 86400000;
+                    const minDate = new Date(now.getTime() - (days-1)*msInDay);
+
+                    if (!this.processedData || this.processedData.length === 0) {
+                        throw new Error('No data available');
+                    }
+
+                    // Filter only selected rig and last <days>
+                    let filteredData = this.processedData.filter(row => (
+                        (typeof row.plataforma === "string" && row.plataforma.toUpperCase() === String(rig).toUpperCase())
+                        && row.fecha && (row.fecha >= minDate && row.fecha <= now)
+                    ));
+
+                    if (filteredData.length === 0) {
+                        return [];
+                    }
+
+                    // Group by driller (nombre + apellido)
+                    let rankingMap = new Map();
+                    for (let row of filteredData) {
+                        let key = (row.nombre + "_" + row.apellido).toLowerCase().replace(/\s+/g, '_');
+                        if (!rankingMap.has(key)) {
+                            rankingMap.set(key, {
+                                name: row.nombre,
+                                surname: row.apellido,
+                                rig: row.plataforma,
+                                totalPoints: 0,
+                                totalActivities: 0,
+                                totalShifts: 0,
+                                latestActivity: row.fecha
+                            });
+                        }
+                        
+                        let rec = rankingMap.get(key);
+                        
+                        // Calculate weighted average: puntuaciondelperforador * numerodeactividadesdelperforador
+                        rec.totalPoints += (row.puntuaciondelperforador * row.numerodeactividadesdelperforador);
+                        rec.totalActivities += row.numerodeactividadesdelperforador;
+                        rec.totalShifts += 1;
+                        
+                        // Keep the most recent rig and activity
+                        if(row.fecha && rec.latestActivity < row.fecha){ 
+                            rec.rig = row.plataforma; 
+                            rec.latestActivity = row.fecha;
+                        }
+                    }
+
+                    // Calculate final weighted average and convert to array
+                    const rankingArr = Array.from(rankingMap.values()).map(rec => ({
+                        name: rec.name,
+                        surname: rec.surname,
+                        rig: rec.rig,
+                        weightedAverage: rec.totalActivities > 0 ? rec.totalPoints / rec.totalActivities : 0,
+                        totalShifts: rec.totalShifts,
+                        latestActivity: rec.latestActivity
+                    }));
+
+                    // Sort by weighted average (descending)
+                    return rankingArr.sort((a, b) => b.weightedAverage - a.weightedAverage);
+                }
+            }
+            window.dataManager = new DataManager();
+        })();
     </script>
 
     <!-- Main ranking logic -->
     <script>
-function displayRanking(data) {
-    const rankingList = document.getElementById('ranking-list');
-    if (!data || data.length === 0) {
-        rankingList.innerHTML = `<div class="error-message">Nenhum dado encontrado para os últimos 15 dias.</div>`;
-        return;
-    }
-    rankingList.innerHTML = data.map((driller, idx) => `
-        <div class="ranking-item">
-            <div class="ranking-position">${idx + 1}</div>
-            <div class="driller-info">
-                <span class="driller-name">${driller.nombre} ${driller.apellido}</span>
-            </div>
-            <div class="driller-rig">${driller.turno}</div>
-            <div class="driller-points">${driller.pontos}</div>
-        </div>
-    `).join('');
-}
+        function displayRanking(data) {
+            const rankingList = document.getElementById('ranking-list');
+            if (!data || data.length === 0) {
+                rankingList.innerHTML = `
+                    <div class="error-message">
+                        📊 Nenhum dado de ranking disponível para PAE-006
+                        <br><br>
+                        <small>Verifique se existem dados para os últimos 15 dias</small>
+                    </div>`;
+                return;
+            }
 
-async function loadRankingData() {
-    const rankingList = document.getElementById('ranking-list');
-    rankingList.innerHTML = `<div class="loading-spinner"><div class="spinner"></div></div>`;
-    try {
-        await window.dataManager.loadCSVData();
-        const data = window.dataManager.getRankingForRigLastDays('PAE-006', 15);
-        displayRanking(data);
-    } catch (e) {
-        rankingList.innerHTML = `<div class="error-message">${e.message}</div>`;
-    }
-}
+            const rankingHTML = data.map((driller, index) => {
+                const pos = index + 1;
+                let positionClass = "", trophyIcon = "";
+                if(pos === 1) { positionClass="gold"; trophyIcon = '<span class="trophy-icon gold">🥇</span>'; }
+                else if(pos === 2) { positionClass="silver"; trophyIcon = '<span class="trophy-icon silver">🥈</span>'; }
+                else if(pos === 3) { positionClass="bronze"; trophyIcon = '<span class="trophy-icon bronze">🥉</span>'; }
+                
+                return `
+                    <div class="ranking-item">
+                        ${trophyIcon}
+                        <div class="ranking-position ${positionClass}">#${pos}</div>
+                        <div class="driller-info">
+                            <div class="driller-name">${driller.name || ""} ${driller.surname || ""}</div>
+                            <div class="driller-rig">${driller.rig || ""}</div>
+                        </div>
+                        <div class="driller-shifts">${driller.totalShifts}</div>
+                        <div class="driller-points">${driller.weightedAverage.toFixed(1)}</div>
+                    </div>
+                `;
+            }).join("");
+            rankingList.innerHTML = rankingHTML;
+        }
 
-setInterval(loadRankingData, 5*60*1000);
-document.addEventListener('DOMContentLoaded', () => {
-    loadRankingData();
-});
+        async function loadRankingData() {
+            try {
+                await window.dataManager.loadCSVData();
+                const data = window.dataManager.getRankingForRigLastDays('PAE-006', 15);
+                displayRanking(data);
+            } catch (error) {
+                document.getElementById('ranking-list').innerHTML = `
+                    <div class="error-message">
+                        ❌ Base de dados não disponível
+                        <br><br>
+                        <small>Erro: ${error.message}</small>
+                        <br><br>
+                        <small>Verifique se o arquivo data/ranking_data.csv está disponível e contém dados válidos</small>
+                    </div>
+                `;
+            }
+        }
+
+        // Auto-refresh every 5 min
+        setInterval(loadRankingData, 5*60*1000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRankingData();
+        });
     </script>
 </body>
 </html>
