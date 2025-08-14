@@ -1,4 +1,4 @@
-﻿Nombre del equipo,Nombre,Apellido,Plataforma,Pozo,Fecha,Turno,Puntuación general del día,Número de actividades del día,Puntuación del perforador,Número de actividades del perforador,
+﻿turno,nombre,apellido,plataforma,pozo,fecha,turno,puntuaciongeneraldeldia,numerodeactividadesdeldia,puntuaciondelperforador,numerodeactividadesdelperforador,
 001,Juan,Pérez,PAE-002,P001,1/10/2025,day,85,50,,90,8
 002,Carlos,Rodriguez,PAE-003,P002,1/10/2025,night,88,50,,92,7
 003,Miguel,González,PAE-005,P003,1/10/2025,day,82,50,,88,9
@@ -35,3 +35,5 @@ Equipe B,Thiago,Soares,PAE-003,PCH-1234,8/8/2025,night,90,100,,85,100
 Equipe B,Thiago,Soares,PAE-003,PCH-1234,8/11/2025,night,80,100,,95,50
 Equipe B,Thiago,Soares,PAE-005,PCH-1234,8/12/2025,day,80,50,,85,50
 Equipe B,Thiago,Soares,PAE-005,PCH-1234,8/10/2025,night,90,50,,95,50
+Equipe B,Thiago,Soares,PAE-006,PCH-1234,8/12/2025,day,80,50,,85,50
+Equipe B,Thiago,Soares,PAE-006,PCH-1234,8/10/2025,night,90,50,,95,50

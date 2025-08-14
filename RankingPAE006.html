@@ -93,15 +93,10 @@
                     <div class="table-header">
                         <div>POS</div>
                         <div>TURNO</div>
-                        <div>PLATAFORMA</div>
-                        <div class="points-header">PUNTOS TOTALES</div>
+                        <div>PUNTOS TOTALES</div>
                     </div>
-
                     <div id="ranking-list">
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <span style="margin-left: 15px;">Cargando ranking...</span>
-                        </div>
+                        <div class="loading-spinner"><div class="spinner"></div></div>
                     </div>
                 </div>
             </div>
@@ -118,243 +113,138 @@
 
     <!-- DataManager JS EMBEDDED AS MODULE-LIKE IN THIS FILE -->
     <script>
-        // DataManager adapted as plain JS object and attached to window
-        (function() {
-            class DataManager {
-                constructor() {
-                    this.rawData = [];
-                    this.processedData = [];
-                    this.lastUpdated = null;
-                    this.csvPath = 'data/ranking_data.csv';
-                }
+(function() {
+    class DataManager {
+        constructor() {
+            this.rawData = [];
+            this.processedData = [];
+            this.csvPath = 'data/ranking_data.csv';
+        }
 
-                async loadCSVData() {
-                    try {
-                        const response = await fetch(this.csvPath + '?' + Date.now()); // cachebusting
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        const csvText = await response.text();
-                        this.rawData = this.parseCSV(csvText);
-                        this.processedData = this.processRawData(this.rawData);
-                        this.lastUpdated = new Date();
-                        return this.processedData;
-                    } catch (error) {
-                        // Fallback sample data
-                        this.processedData = this.getFallbackData();
-                        this.lastUpdated = new Date();
-                        return this.processedData;
-                    }
-                }
-
-                parseCSV(csvText) {
-                    // Detect separator (support for ; as well)
-                    let lines = csvText.trim().split(/\r?\n/);
-                    let delimiter = (lines[0].includes(';') && !lines[0].includes(',')) ? ';' : ',';
-                    let headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
-                    // Try to map them (disambiguate columns)
-                    let colIndex = (name) => headers.findIndex(h => h.indexOf(name) !== -1);
-                    let idxEq    = colIndex('equipo');
-                    let idxNombre = colIndex('nombre');
-                    let idxApellido = colIndex('apellido');
-                    let idxPlataforma = colIndex('plataforma');
-                    let idxPozo = colIndex('pozo');
-                    let idxFecha = colIndex('fecha');
-                    let idxTurno = colIndex('turno') >= 0 ? colIndex('turno') : colIndex('guardia');
-                    let idxScoreGeneral = colIndex('puntuación general'); //allow acentos!
-                    if (idxScoreGeneral < 0) idxScoreGeneral = colIndex('score general');
-                    if (idxScoreGeneral < 0) idxScoreGeneral = colIndex('puntuacion general');
-                    let idxNumActividadesDia = colIndex('número de actividades del día');
-                    let idxScorePerforador = colIndex('puntuación del perforador');
-                    if (idxScorePerforador < 0) idxScorePerforador = colIndex('score perforador');
-                    let idxNumActividadesPerforador = colIndex('número de actividades del perforador');
-
-                    const data = [];
-                    for (let i = 1; i < lines.length; i++) {
-                        let values = lines[i].split(delimiter).map(v => v.trim());
-                        if (values.length < headers.length) continue;
-                        let obj = {
-                            equipo: idxEq >= 0 ? values[idxEq] : "",
-                            nombre: idxNombre >= 0 ? values[idxNombre] : "",
-                            apellido: idxApellido >= 0 ? values[idxApellido] : "",
-                            plataforma: idxPlataforma >= 0 ? values[idxPlataforma] : "",
-                            pozo: idxPozo >= 0 ? values[idxPozo] : "",
-                            fecha: this.parseDateRaw(values[idxFecha]),
-                            turno: idxTurno >= 0 ? values[idxTurno] : "",
-                            scoreGeneral: idxScoreGeneral >= 0 ? parseFloat(values[idxScoreGeneral]) || 0 : 0,
-                            numActividadesDia: idxNumActividadesDia >= 0 ? parseInt(values[idxNumActividadesDia]) || 0 : 0,
-                            scorePerforador: idxScorePerforador >= 0 ? parseFloat(values[idxScorePerforador]) || 0 : 0,
-                            numActividadesPerforador: idxNumActividadesPerforador >= 0 ? parseInt(values[idxNumActividadesPerforador]) || 0 : 0,
-                        };
-                        data.push(obj);
-                    }
-                    return data;
-                }
-
-                processRawData(rawData) {
-                    return rawData.map(item => {
-                        const nombreCompleto = (item.nombre || "") + " " + (item.apellido || "");
-                        // Use plataforma (csv) for rig
-                        return {
-                            id: (item.nombre + "_" + item.apellido).toLowerCase().replace(/\s+/g, '_'),
-                            nombre: item.nombre || "",
-                            apellido: item.apellido || "",
-                            nombreCompleto: nombreCompleto,
-                            plataforma: item.plataforma || "",
-                            pozo: item.pozo || "",
-                            fecha: item.fecha,
-                            turno: item.turno || "",
-                            scoreGeneral: item.scoreGeneral || 0,
-                            numActividadesDia: item.numActividadesDia || 0,
-                            scorePerforador: item.scorePerforador || 0,
-                            numActividadesPerforador: item.numActividadesPerforador || 0,
-                            puntosTotales: (item.scoreGeneral || 0) + (item.scorePerforador || 0)
-                        }
-                    });
-                }
-
-                // Robust date parser for DD/MM/YYYY, YYYY-MM-DD, etc.
-                parseDateRaw(dateString) {
-                    if (!dateString) return null;
-                    dateString = dateString.trim();
-                    let d = null;
-                    // YYYY-MM-DD
-                    if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
-                        d = new Date(dateString.substr(0,10));
-                    }
-                    // DD/MM/YYYY
-                    else if (/^\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
-                        let [d1, m1, y1] = dateString.split("/");
-                        d = new Date(+y1, +m1 - 1, +d1);
-                    }
-                    // DD-MM-YYYY
-                    else if (/^\d{2}-\d{2}-\d{4}/.test(dateString)) {
-                        let [d1, m1, y1] = dateString.split("-");
-                        d = new Date(+y1, +m1 - 1, +d1);
-                    }
-                    // Try parsing directly if above fails
-                    if (!d || isNaN(d.getTime())) {
-                        d = new Date(dateString);
-                    }
-                    if (isNaN(d.getTime())) return null;
-                    // For filtering, we always use the date only (00:00)
-                    d.setHours(0,0,0,0);
-                    return d;
-                }
-
-                getFallbackData() {
-                    return [
-                        { id: "juan_perez", nombre: "Juan", apellido: "Pérez", nombreCompleto: "Juan Pérez", plataforma: "PAE-002", pozo: "Pozo 1", fecha: new Date(2024,2,2), turno: "Tarde", scoreGeneral: 75, scorePerforador: 80, puntosTotales: 155 },
-                        { id: "ana_garcia", nombre: "Ana", apellido: "García", nombreCompleto: "Ana García", plataforma: "PAE-002", pozo: "Pozo 1", fecha: new Date(2024,2,6), turno: "Mañana", scoreGeneral: 75, scorePerforador: 70, puntosTotales: 145 },
-                        { id: "luis_lopez", nombre: "Luis", apellido: "López", nombreCompleto: "Luis López", plataforma: "PAE-002", pozo: "Pozo 2", fecha: new Date(2024,2,7), turno: "Tarde", scoreGeneral: 95, scorePerforador: 50, puntosTotales: 145 },
-                        { id: "pedro_ramirez", nombre: "Pedro", apellido: "Ramirez", nombreCompleto: "Pedro Ramirez", plataforma: "PAE-002", pozo: "Pozo 10", fecha: new Date(2024,1,19), turno: "Noche", scoreGeneral: 60, scorePerforador: 75, puntosTotales: 135 }
-                    ];
-                }
-
-                // Returns ranking array for the last <days> days, one rig, summed by driller
-                getRankingForRigLastDays(rig, days = 15) {
-                    const now = new Date();
-                    now.setHours(0,0,0,0);
-                    const msInDay = 86400000;
-                    const minDate = new Date(now.getTime() - (days-1)*msInDay);
-
-                    let arr = this.processedData && this.processedData.length > 0
-                        ? this.processedData
-                        : this.getFallbackData();
-
-                    // Filter only selected rig and last <days>
-                    arr = arr.filter(row => (
-                        (typeof row.plataforma === "string" && row.plataforma.toUpperCase() === String(rig).toUpperCase())
-                        && row.fecha && (row.fecha >= minDate && row.fecha <= now)
-                    ));
-
-                    // Group by driller id
-                    let rankingMap = new Map();
-                    for (let row of arr) {
-                        let id = row.id || ((row.nombre + "_" + row.apellido).toLowerCase().replace(/\s+/g, '_'));
-                        if (!rankingMap.has(id)) {
-                            rankingMap.set(id, {
-                                name: row.nombre,
-                                surname: row.apellido,
-                                rig: row.plataforma,
-                                points: 0,
-                                latestActivity: row.fecha
-                            });
-                        }
-                        let rec = rankingMap.get(id);
-                        rec.points += Number(row.puntosTotales || 0);
-                        // Keep the most recent rig and activity
-                        if(row.fecha && rec.latestActivity < row.fecha){ rec.rig = row.plataforma; rec.latestActivity=row.fecha;}
-                    }
-                    // To array and sort by points desc
-                    const rankingArr = Array.from(rankingMap.values()).sort((a, b) => b.points - a.points);
-                    return rankingArr;
-                }
+        async loadCSVData() {
+            try {
+                const response = await fetch(this.csvPath);
+                if (!response.ok) throw new Error('CSV não disponível');
+                const csvText = await response.text();
+                this.rawData = this.parseCSV(csvText);
+                this.processedData = this.rawData;
+                return this.processedData;
+            } catch (e) {
+                throw new Error('Base de dados não disponível');
             }
-            window.dataManager = new DataManager();
-        })();
+        }
+
+        parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim());
+                if (values.length < headers.length) continue;
+                const record = {};
+                headers.forEach((header, idx) => {
+                    record[header] = values[idx];
+                });
+                // Conversão de tipos
+                record['fecha'] = this.parseDate(record['fecha']);
+                record['puntuaciondelperforador'] = parseFloat(record['puntuaciondelperforador']) || 0;
+                record['numerodeactividadesdelperforador'] = parseFloat(record['numerodeactividadesdelperforador']) || 0;
+                data.push(record);
+            }
+            return data;
+        }
+
+        parseDate(dateString) {
+            if (!dateString) return null;
+            // Aceita DD/MM/YYYY ou MM/DD/YYYY ou YYYY-MM-DD
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                // DD/MM/YYYY
+                return new Date(parts[2], parts[1] - 1, parts[0]);
+            }
+            if (dateString.includes('-')) {
+                return new Date(dateString);
+            }
+            return null;
+        }
+
+        // Retorna ranking para plataforma e últimos X dias, média ponderada
+        getRankingForRigLastDays(rig, days = 15) {
+            const now = new Date();
+            const cutoff = new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
+            const filtered = this.processedData.filter(r =>
+                r['plataforma'] === rig &&
+                r['fecha'] && r['fecha'] >= cutoff
+            );
+            // Agrupa por nome+sobrenome
+            const perfStats = {};
+            filtered.forEach(r => {
+                const key = `${r['nombre']} ${r['apellido']}`;
+                if (!perfStats[key]) {
+                    perfStats[key] = {
+                        nombre: r['nombre'],
+                        apellido: r['apellido'],
+                        turno: r['turno'],
+                        totalPontos: 0,
+                        totalAtividades: 0
+                    };
+                }
+                perfStats[key].totalPontos += r['puntuaciondelperforador'] * r['numerodeactividadesdelperforador'];
+                perfStats[key].totalAtividades += r['numerodeactividadesdelperforador'];
+            });
+            // Calcula média ponderada
+            const ranking = Object.values(perfStats)
+                .filter(p => p.totalAtividades > 0)
+                .map(p => ({
+                    nombre: p.nombre,
+                    apellido: p.apellido,
+                    turno: p.turno,
+                    pontos: Math.round(p.totalPontos / p.totalAtividades)
+                }))
+                .sort((a, b) => b.pontos - a.pontos);
+            return ranking;
+        }
+    }
+    window.dataManager = new DataManager();
+})();
     </script>
 
     <!-- Main ranking logic -->
     <script>
-        function displayRanking(data) {
-            const rankingList = document.getElementById('ranking-list');
-            if (!data || data.length === 0) {
-                rankingList.innerHTML = `
-                    <div class="error-message">
-                        📊 No hay datos de ranking disponibles
-                        <br><br>
-                        <small>Verifique que el archivo CSV esté disponible</small>
-                    </div>`;
-                return;
-            }
+function displayRanking(data) {
+    const rankingList = document.getElementById('ranking-list');
+    if (!data || data.length === 0) {
+        rankingList.innerHTML = `<div class="error-message">Nenhum dado encontrado para os últimos 15 dias.</div>`;
+        return;
+    }
+    rankingList.innerHTML = data.map((driller, idx) => `
+        <div class="ranking-item">
+            <div class="ranking-position">${idx + 1}</div>
+            <div class="driller-info">
+                <span class="driller-name">${driller.nombre} ${driller.apellido}</span>
+            </div>
+            <div class="driller-rig">${driller.turno}</div>
+            <div class="driller-points">${driller.pontos}</div>
+        </div>
+    `).join('');
+}
 
-            const rankingHTML = data.map((driller, index) => {
-                const pos = index + 1;
-                let positionClass = "", trophyIcon = "";
-                if(pos === 1) { positionClass="gold"; trophyIcon = '<span class="trophy-icon gold">🥇</span>'; }
-                else if(pos === 2) { positionClass="silver"; trophyIcon = '<span class="trophy-icon silver">🥈</span>'; }
-                else if(pos === 3) { positionClass="bronze"; trophyIcon = '<span class="trophy-icon bronze">🥉</span>'; }
-                return `
-                    <div class="ranking-item">
-                        ${trophyIcon}
-                        <div class="ranking-position ${positionClass}">#${pos}</div>
-                        <div class="driller-info">
-                            <div class="driller-name">${driller.name || ""} ${driller.surname || ""}</div>
-                            <div class="driller-rig">${driller.rig || ""}</div>
-                        </div>
-                        <div></div>
-                        <div class="driller-points">${driller.points.toLocaleString()}</div>
-                    </div>
-                `;
-            }).join("");
-            rankingList.innerHTML = rankingHTML;
-        }
+async function loadRankingData() {
+    const rankingList = document.getElementById('ranking-list');
+    rankingList.innerHTML = `<div class="loading-spinner"><div class="spinner"></div></div>`;
+    try {
+        await window.dataManager.loadCSVData();
+        const data = window.dataManager.getRankingForRigLastDays('PAE-006', 15);
+        displayRanking(data);
+    } catch (e) {
+        rankingList.innerHTML = `<div class="error-message">${e.message}</div>`;
+    }
+}
 
-        async function loadRankingData() {
-            try {
-                await window.dataManager.loadCSVData();
-                const data = window.dataManager.getRankingForRigLastDays('PAE-006', 15);
-                displayRanking(data);
-            } catch (error) {
-                document.getElementById('ranking-list').innerHTML = `
-                    <div class="error-message">
-                        ❌ Error al cargar los datos del ranking
-                        <br><br>
-                        <small>Error: ${error.message}</small>
-                        <br><br>
-                        <small>Verifique que el archivo data/ranking_data.csv esté disponible</small>
-                    </div>
-                `;
-            }
-        }
-
-        // Auto-refresh every 5 min
-        setInterval(loadRankingData, 5*60*1000);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadRankingData();
-        });
-
-        // Optional: leave back button js as is (direct link)
+setInterval(loadRankingData, 5*60*1000);
+document.addEventListener('DOMContentLoaded', () => {
+    loadRankingData();
+});
     </script>
 </body>
 </html>
