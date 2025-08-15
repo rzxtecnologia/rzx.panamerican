@@ -681,8 +681,8 @@
                 
         // Additional specific user credentials (optional)
         const specificCredentials = {
-            'admin': 'pae2025',
-            'supervisor': 'supervisor123'
+            'admin': 'rzxtec123',
+            'admin ': 'XPD2024'
         };
 
         // Check if user is already logged in
@@ -702,7 +702,7 @@
             let isValidLogin = false;
             
             // Check if it's a company email with company password
-            if (username.toLowerCase().endsWith(COMPANY_DOMAIN.toLowerCase()) && password === COMPANY_PASSWORD) {
+            if (COMPANY_DOMAINS.some(domain => username.toLowerCase().endsWith(domain.toLowerCase())) && password === COMPANY_PASSWORD) {
                 isValidLogin = true;
             }
             // Check specific credentials
