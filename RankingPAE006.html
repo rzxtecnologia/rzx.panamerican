@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOFTWARE GAMIFICATION - Ranking Perforadores</title>
     <style>
-        /* [COPY YOUR FULL CSS HERE - OMITTED FOR SPACE, TAILORED AS NEEDED] */
-        /* ... (keep your CSS unchanged) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0c1d29; min-height: 100vh; color: white; overflow-x: hidden;}
         .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; min-height: 100vh; display: flex; flex-direction: column; }
@@ -33,12 +31,12 @@
         .ranking-position.gold { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);}
         .ranking-position.silver { color: #c0c0c0; text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);}
         .ranking-position.bronze { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);}
-        .driller-info { display: flex; flex-direction: column;}
-        .driller-name { font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 5px;}
-        .driller-rig { background: linear-gradient(135deg, #134f62, #4a90a4); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; display: inline-block; width: fit-content; box-shadow: 0 2px 8px rgba(19, 79, 98, 0.3);}
-        .driller-points { font-size: 1.4rem; font-weight: 700; color: #4a90a4; text-align: center; position: relative;}
-        .driller-points::after { content: 'pts'; font-size: 0.7rem; opacity: 0.7; margin-left: 5px;}
-        .driller-shifts { font-size: 1.1rem; font-weight: 600; color: #ffffff; text-align: center;}
+        .team-info { display: flex; flex-direction: column;}
+        .team-name { font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 5px;}
+        .team-rig { background: linear-gradient(135deg, #134f62, #4a90a4); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; display: inline-block; width: fit-content; box-shadow: 0 2px 8px rgba(19, 79, 98, 0.3);}
+        .team-points { font-size: 1.4rem; font-weight: 700; color: #4a90a4; text-align: center; position: relative;}
+        .team-points::after { content: 'pts'; font-size: 0.7rem; opacity: 0.7; margin-left: 5px;}
+        .team-shifts { font-size: 1.1rem; font-weight: 600; color: #ffffff; text-align: center;}
         .trophy-icon { position: absolute; left: -15px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; opacity: 0.8;}
         .trophy-icon.gold { color: #ffd700; }
         .trophy-icon.silver { color: #c0c0c0; }
@@ -56,17 +54,17 @@
             .page-title { font-size: 2.2rem; } 
             .table-header, .ranking-item { grid-template-columns: 60px 1fr 100px 100px; gap: 15px; padding: 15px 20px;} 
             .ranking-position { font-size: 1.2rem;} 
-            .driller-name { font-size: 1rem;} 
-            .driller-rig { font-size: 0.75rem; padding: 3px 8px;} 
-            .driller-points { font-size: 1.1rem;} 
+            .team-name { font-size: 1rem;} 
+            .team-rig { font-size: 0.75rem; padding: 3px 8px;} 
+            .team-points { font-size: 1.1rem;} 
             .main-logo { max-height: 150px; max-width: 375px; } 
         }
         @media (max-width: 480px) { 
             .container { padding: 0 15px; } 
             .page-title { font-size: 1.8rem; } 
             .table-header, .ranking-item { grid-template-columns: 50px 1fr 80px; gap: 10px; padding: 12px 15px; } 
-            .table-header .points-header, .driller-points { display: none; } 
-            .driller-name { font-size: 0.9rem; } 
+            .table-header .points-header, .team-points { display: none; } 
+            .team-name { font-size: 0.9rem; } 
             .main-logo { max-height: 120px; max-width: 300px; } 
             .small-logo { max-height: 60px; max-width: 150px; } 
         }
@@ -102,8 +100,8 @@
         <main class="main-content">
             <div class="ranking-container">
                 <div class="ranking-header">
-                    <h2 class="ranking-title">🏆 TOP TURNOS PAE-006</h2>
-                    <p class="ranking-subtitle">Classificação PAE-006 - Média Ponderada Últimos 15 dias</p>
+                    <h2 class="ranking-title">🏆 MEJORES TURNOS PAE-006</h2>
+                    <p class="ranking-subtitle">Classificação PAE-006 - Média Puntos Últimos 15 dias</p>
                 </div>
 
                 <div class="ranking-table">
@@ -133,9 +131,8 @@
         </footer>
     </div>
 
-    <!-- DataManager JS EMBEDDED AS MODULE-LIKE IN THIS FILE -->
+    <!-- DataManager JS -->
     <script>
-        // DataManager adapted as plain JS object and attached to window
         (function() {
             class DataManager {
                 constructor() {
@@ -161,20 +158,18 @@
                 }
 
                 parseCSV(csvText) {
-                    // Split lines and detect delimiter
                     let lines = csvText.trim().split(/\r?\n/);
                     if (lines.length < 2) throw new Error('CSV file is empty or invalid');
                     
                     let delimiter = (lines[0].includes(';') && !lines[0].includes(',')) ? ';' : ',';
                     let headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
                     
-                    // Expected columns based on your specification:
-                    // turno,nombre,apellido,plataforma,pozo,fecha,turno,puntuaciongeneraldeldia,numerodeactividadesdeldia,puntuaciondelperforador,numerodeactividadesdelperforador
+                    console.log('CSV Headers found:', headers);
                     
                     const data = [];
                     for (let i = 1; i < lines.length; i++) {
                         let values = lines[i].split(delimiter).map(v => v.trim());
-                        if (values.length < headers.length || !values[1] || !values[2]) continue; // Skip invalid rows
+                        if (values.length < headers.length || !values[0] || !values[1]) continue; // Skip invalid rows
                         
                         let obj = {
                             turno: values[0] || "",
@@ -183,7 +178,7 @@
                             plataforma: values[3] || "",
                             pozo: values[4] || "",
                             fecha: this.parseDateRaw(values[5]),
-                            turnoGuardia: values[6] || "", // Second turno column (shift type)
+                            turnoGuardia: values[6] || "",
                             puntuaciongeneraldeldia: parseFloat(values[7]) || 0,
                             numerodeactividadesdeldia: parseInt(values[8]) || 0,
                             puntuaciondelperforador: parseFloat(values[9]) || 0,
@@ -191,6 +186,7 @@
                         };
                         data.push(obj);
                     }
+                    console.log('Parsed data sample:', data.slice(0, 3));
                     return data;
                 }
 
@@ -198,14 +194,14 @@
                     return rawData.map(item => {
                         const nombreCompleto = (item.nombre || "") + " " + (item.apellido || "");
                         return {
-                            id: (item.nombre + "_" + item.apellido).toLowerCase().replace(/\s+/g, '_'),
+                            id: (item.turno || "unknown").toLowerCase().replace(/\s+/g, '_'),
+                            turno: item.turno || "",
                             nombre: item.nombre || "",
                             apellido: item.apellido || "",
                             nombreCompleto: nombreCompleto,
                             plataforma: item.plataforma || "",
                             pozo: item.pozo || "",
                             fecha: item.fecha,
-                            turno: item.turno || "",
                             turnoGuardia: item.turnoGuardia || "",
                             puntuaciongeneraldeldia: item.puntuaciongeneraldeldia || 0,
                             numerodeactividadesdeldia: item.numerodeactividadesdeldia || 0,
@@ -215,7 +211,6 @@
                     });
                 }
 
-                // Robust date parser for DD/MM/YYYY, YYYY-MM-DD, etc.
                 parseDateRaw(dateString) {
                     if (!dateString) return null;
                     dateString = dateString.trim();
@@ -235,18 +230,15 @@
                         let [d1, m1, y1] = dateString.split("-");
                         d = new Date(+y1, +m1 - 1, +d1);
                     }
-                    // Try parsing directly if above fails
                     if (!d || isNaN(d.getTime())) {
                         d = new Date(dateString);
                     }
                     if (isNaN(d.getTime())) return null;
                     
-                    // For filtering, we always use the date only (00:00)
                     d.setHours(0,0,0,0);
                     return d;
                 }
 
-                // Returns ranking array for the last <days> days, one rig, with weighted average calculation
                 getRankingForRigLastDays(rig, days = 15) {
                     const now = new Date();
                     now.setHours(0,0,0,0);
@@ -257,53 +249,71 @@
                         throw new Error('No data available');
                     }
 
-                    // Filter only selected rig and last <days>
-                    let filteredData = this.processedData.filter(row => (
-                        (typeof row.plataforma === "string" && row.plataforma.toUpperCase() === String(rig).toUpperCase())
-                        && row.fecha && (row.fecha >= minDate && row.fecha <= now)
-                    ));
+                    console.log(`Filtering data for rig: ${rig}, from ${minDate.toISOString()} to ${now.toISOString()}`);
+                    
+                    // Filter by rig and date range
+                    let filteredData = this.processedData.filter(row => {
+                        const rigMatch = (typeof row.plataforma === "string" && row.plataforma.toUpperCase() === String(rig).toUpperCase());
+                        const dateMatch = row.fecha && (row.fecha >= minDate && row.fecha <= now);
+                        return rigMatch && dateMatch;
+                    });
 
+                    console.log(`Filtered data count: ${filteredData.length}`);
+                    
                     if (filteredData.length === 0) {
                         return [];
                     }
 
-                    // Group by turno (team name) instead of driller name
+                    // Group by turno (team name)
                     let rankingMap = new Map();
                     for (let row of filteredData) {
-                        let key = row.turno; // Use turno as the key
+                        let key = row.turno;
+                        if (!key || key.trim() === '') continue; // Skip empty turno names
+                        
                         if (!rankingMap.has(key)) {
                             rankingMap.set(key, {
                                 turno: row.turno,
                                 rig: row.plataforma,
-                                totalWeightedPoints: 0, // Sum of (puntuacion * activities) for each day
-                                totalActivities: 0,     // Sum of all activities across days
+                                totalWeightedPoints: 0,
+                                totalActivities: 0,
                                 totalShifts: 0,
-                                latestActivity: row.fecha
+                                latestActivity: row.fecha,
+                                drillerNames: new Set() // Track unique driller names in this team
                             });
                         }
                         
                         let rec = rankingMap.get(key);
                         
-                        // Add weighted points for this day: puntuaciondelperforador * numerodeactividadesdelperforador
+                        // Add weighted points and activities
                         rec.totalWeightedPoints += (row.puntuaciondelperforador * row.numerodeactividadesdelperforador);
                         rec.totalActivities += row.numerodeactividadesdelperforador;
                         rec.totalShifts += 1;
                         
-                        // Keep the most recent rig and activity
+                        // Track driller names
+                        if (row.nombreCompleto && row.nombreCompleto.trim() !== '') {
+                            rec.drillerNames.add(row.nombreCompleto.trim());
+                        }
+                        
+                        // Keep most recent rig and activity
                         if(row.fecha && rec.latestActivity < row.fecha){ 
                             rec.rig = row.plataforma; 
                             rec.latestActivity = row.fecha;
                         }
                     }
 
-                    // Calculate final weighted average and convert to array
+                    console.log(`Teams found: ${rankingMap.size}`);
+
+                    // Convert to array and calculate final weighted average
                     const rankingArr = Array.from(rankingMap.values()).map(rec => ({
                         turno: rec.turno,
                         rig: rec.rig,
                         weightedAverage: rec.totalActivities > 0 ? rec.totalWeightedPoints / rec.totalActivities : 0,
                         totalShifts: rec.totalShifts,
-                        latestActivity: rec.latestActivity
+                        latestActivity: rec.latestActivity,
+                        drillerNames: Array.from(rec.drillerNames).join(', ')
                     }));
+
+                    console.log('Ranking data:', rankingArr);
 
                     // Sort by weighted average (descending)
                     return rankingArr.sort((a, b) => b.weightedAverage - a.weightedAverage);
@@ -327,7 +337,7 @@
                 return;
             }
 
-            const rankingHTML = data.map((driller, index) => {
+            const rankingHTML = data.map((team, index) => {
                 const pos = index + 1;
                 let positionClass = "", trophyIcon = "";
                 if(pos === 1) { positionClass="gold"; trophyIcon = '<span class="trophy-icon gold">🥇</span>'; }
@@ -338,12 +348,12 @@
                     <div class="ranking-item">
                         ${trophyIcon}
                         <div class="ranking-position ${positionClass}">#${pos}</div>
-                        <div class="driller-info">
-                            <div class="driller-name">${driller.name || ""} ${driller.surname || ""}</div>
-                            <div class="driller-rig">${driller.rig || ""}</div>
+                        <div class="team-info">
+                            <div class="team-name">${team.turno}</div>
+                            <div class="team-rig">${team.rig}</div>
                         </div>
-                        <div class="driller-shifts">${driller.totalShifts}</div>
-                        <div class="driller-points">${driller.weightedAverage.toFixed(1)}</div>
+                        <div class="team-shifts">${team.totalShifts}</div>
+                        <div class="team-points">${team.weightedAverage.toFixed(1)}</div>
                     </div>
                 `;
             }).join("");
@@ -356,6 +366,7 @@
                 const data = window.dataManager.getRankingForRigLastDays('PAE-006', 15);
                 displayRanking(data);
             } catch (error) {
+                console.error('Loading error:', error);
                 document.getElementById('ranking-list').innerHTML = `
                     <div class="error-message">
                         ❌ Base de dados não disponível
