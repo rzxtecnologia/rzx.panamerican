@@ -28,7 +28,108 @@
             flex-direction: column;
         }
 
-        /* Header with Main Logo */
+        /* LOGIN SCREEN STYLES */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c1d29 0%, #1a2f3a 100%);
+        }
+
+        .login-box {
+            background: rgba(40, 63, 74, 0.9);
+            border: 2px solid #134f62;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-logo {
+            max-height: 120px;
+            margin-bottom: 30px;
+            filter: brightness(1.2);
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 30px;
+            color: #e2e8f0;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login-input {
+            padding: 15px;
+            border: 2px solid #134f62;
+            border-radius: 10px;
+            background: rgba(19, 79, 98, 0.2);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #4a90a4;
+            background: rgba(19, 79, 98, 0.3);
+            box-shadow: 0 0 0 3px rgba(74, 144, 164, 0.2);
+        }
+
+        .login-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-button {
+            padding: 15px;
+            background: linear-gradient(135deg, #134f62, #4a90a4);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(19, 79, 98, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Hide main content initially */
+        .main-dashboard {
+            display: none;
+        }
+
+        /* MAIN DASHBOARD STYLES (your existing styles) */
         .header {
             padding: 40px 0;
             text-align: center;
@@ -68,7 +169,6 @@
             font-weight: 300;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             padding: 60px 0;
@@ -82,14 +182,12 @@
             gap: 40px;
         }
 
-        /* First Row - OFICINA and IT */
         .first-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
         }
 
-        /* Second Row - PAE sections */
         .second-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -166,7 +264,6 @@
             color: #e2e8f0;
         }
 
-        /* Horizontal button layouts */
         .section-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -217,7 +314,6 @@
             transform: translateY(0);
         }
 
-        /* Special styling for OFICINA section with more buttons */
         .oficina-section .section-buttons {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -229,7 +325,6 @@
             padding: 8px 12px;
         }
 
-        /* IT Section styling */
         .it-section .section-buttons {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -241,7 +336,6 @@
             padding: 10px 12px;
         }
 
-        /* PAE sections styling */
         .pae-section .section-buttons {
             display: flex;
             flex-direction: column;
@@ -254,7 +348,6 @@
             padding: 12px 16px;
         }
 
-        /* Footer with Small Logo */
         .footer {
             padding: 40px 0;
             text-align: center;
@@ -287,6 +380,25 @@
             font-size: 0.9rem;
             opacity: 0.6;
             color: #94a3b8;
+        }
+
+        .logout-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
         }
 
         /* Responsive Design */
@@ -348,6 +460,18 @@
                 max-height: 80px;
                 max-width: 200px;
             }
+
+            .login-box {
+                margin: 20px;
+                padding: 30px;
+            }
+
+            .logout-button {
+                top: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -382,7 +506,6 @@
             }
         }
 
-        /* Floating background elements */
         .bg-shapes {
             position: fixed;
             top: 0;
@@ -438,95 +561,195 @@
         <div class="bg-shape"></div>
     </div>
 
-    <div class="container">
-        <!-- Header with Main Logo -->
-        <header class="header">
-            <img src="images\pae_logo_branco.png" alt="Pan America Energy" class="main-logo">
-            <h1 class="page-title">SOFTWARE GAMIFICATION</h1>
-            <p class="page-subtitle">ENLACES DE SEGUIMIENTO EN TIEMPO REAL</p>
-        </header>
-
-        <!-- Main Content with Sections -->
-        <main class="main-content">
-            <div class="sections-container">
-                <!-- First Row: OFICINA and IT -->
-                <div class="first-row">
-                    <!-- OFICINA Section -->
-                    <div class="section-card oficina-section">
-                        <div class="section-icon">🏢</div>
-                        <h2 class="section-title">OFICINA</h2>
-                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para oficina</p>
-                        <div class="section-buttons">
-                            <a href="https://xpd.panamerican.rzxtecnologia.com.br/" class="section-button">DASHBOARD XPD</a>
-                            <a href="#" class="section-button">GERENCIA</a>
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/cb6255c9ba9c4528b44816cfbc0fec59" class="section-button">WAR ROOM</a>
-                            <a href="#" class="section-button">ING. DE GUARDIA</a>
-                            <a href="#" class="section-button">DIRECCIONAL</a>
-                            <a href="http://drilling.agent.rzxtecnologia.com.br/" class="section-button">SENTINEL IA</a>
-                            <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingAvanzadoPerforadores.html" class="section-button">RANKING PERFORADORES</a>
-                        </div>
-                    </div>
-
-                    <!-- RZX SOPORTE -->
-                    <div class="section-card it-section">
-                        <div class="section-icon">💻</div>
-                        <h2 class="section-title">RZX SOPORTE</h2>
-                        <p class="section-desc">XPD Soporte - Contacto 24H para ayuda y solicitudes de nuevas personalizaciones</p>
-                        <div class="section-buttons">
-                            <a href="mailto:pae@rzxtecnologia.com.br?subject=Soporte Gamification RT&body=Hola Soporte,%0D%0A" class="section-button">OUTLOOK</a>
-                            <a href="msteams://teams.microsoft.com/l/chat/0/0?users=tsoares@rzxtecnologia.com.br" class="section-button">TEAMS</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Second Row: PAE Sections -->
-                <div class="second-row">
-                    <!-- PAE-002 Section -->
-                    <div class="section-card pae-section">
-                        <div class="section-icon">🗼</div>
-                        <h2 class="section-title">PAE-002</h2>
-                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-002</p>
-                        <div class="section-buttons">
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/d138867b20ca414a86f22e9cbb050b18" class="section-button">COMPANY MAN</a>
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/09b6d38f1f0147b0bf48fd7000b2e718" class="section-button">PERFORADOR</a>
-                            <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingPAE002.html" class="section-button">RANKING PAE-002</a>
-                        </div>
-                    </div>
-
-                    <!-- PAE-003 Section -->
-                    <div class="section-card pae-section">
-                        <div class="section-icon">🗼</div>
-                        <h2 class="section-title">PAE-003</h2>
-                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-003</p>
-                        <div class="section-buttons">
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/5a9b8862796b4b2381bd1089aa751e5d" class="section-button">COMPANY MAN</a>
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/d77fda4cb3e249b9963c00b0277cb661" class="section-button">PERFORADOR</a>
-                            <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingPAE003.html" class="section-button">RANKING PAE-003</a>
-                        </div>
-                    </div>
-
-                    <!-- PAE-005 Section -->
-                    <div class="section-card pae-section">
-                        <div class="section-icon">🗼</div>
-                        <h2 class="section-title">PAE-005</h2>
-                        <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-005</p>
-                        <div class="section-buttons">
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/d3bdd50503064d9e9e331804a58e3714" class="section-button">COMPANY MAN</a>
-                            <a href="https://wonderdatalabs.grafana.net/public-dashboards/4847257b5db940f7a70c1ee99d383eb7" class="section-button">PERFORADOR</a>
-                            <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingPAE005.html" class="section-button">RANKING PAE-005</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Footer with Small Logo -->
-        <footer class="footer">
-            <div class="footer-logo-section">
-                <img src="images/rzx_logo.png" alt="Logo Secundario" class="small-logo">
-            </div>
-            <p class="footer-text">&copy; 2025 RZX Tecnología. Todos los derechos reservados.</p>
-        </footer>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <img src="images/pae_logo_branco.png" alt="Pan America Energy" class="login-logo">
+            <h1 class="login-title">ACCESO RESTRINGIDO</h1>
+            <p class="login-subtitle">Ingrese sus credenciales para continuar</p>
+            
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <input type="email" id="username" class="login-input" placeholder="Email corporativo (@rzxtec.com)" required>
+                <input type="password" id="password" class="login-input" placeholder="Contraseña" required>
+                <button type="submit" class="login-button">INGRESAR</button>
+                <div id="errorMessage" class="error-message">Credenciales incorrectas. Use su email @rzxtec.com</div>
+            </form>
+        </div>
     </div>
+
+    <!-- MAIN DASHBOARD (Hidden by default) -->
+    <div id="mainDashboard" class="main-dashboard">
+        <button class="logout-button" onclick="logout()">Cerrar Sesión</button>
+        
+        <div class="container">
+            <!-- Header with Main Logo -->
+            <header class="header">
+                <img src="images/pae_logo_branco.png" alt="Pan America Energy" class="main-logo">
+                <h1 class="page-title">SOFTWARE GAMIFICATION</h1>
+                <p class="page-subtitle">ENLACES DE SEGUIMIENTO EN TIEMPO REAL</p>
+            </header>
+
+            <!-- Main Content with Sections -->
+            <main class="main-content">
+                <div class="sections-container">
+                    <!-- First Row: OFICINA and IT -->
+                    <div class="first-row">
+                        <!-- OFICINA Section -->
+                        <div class="section-card oficina-section">
+                            <div class="section-icon">🏢</div>
+                            <h2 class="section-title">OFICINA</h2>
+                            <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para oficina</p>
+                            <div class="section-buttons">
+                                <a href="https://xpd.panamerican.rzxtecnologia.com.br/" class="section-button">DASHBOARD XPD</a>
+                                <a href="#" class="section-button">GERENCIA</a>
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/cb6255c9ba9c4528b44816cfbc0fec59" class="section-button">WAR ROOM</a>
+                                <a href="#" class="section-button">ING. DE GUARDIA</a>
+                                <a href="#" class="section-button">DIRECCIONAL</a>
+                                <a href="http://drilling.agent.rzxtecnologia.com.br/" class="section-button">SENTINEL IA</a>
+                                <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingAvanzadoPerforadores.html" class="section-button">RANKING PERFORADORES</a>
+                            </div>
+                        </div>
+
+                        <!-- RZX SOPORTE -->
+                        <div class="section-card it-section">
+                            <div class="section-icon">💻</div>
+                            <h2 class="section-title">RZX SOPORTE</h2>
+                            <p class="section-desc">XPD Soporte - Contacto 24H para ayuda y solicitudes de nuevas personalizaciones</p>
+                            <div class="section-buttons">
+                                <a href="mailto:pae@rzxtecnologia.com.br?subject=Soporte Gamification RT&body=Hola Soporte,%0D%0A" class="section-button">OUTLOOK</a>
+                                <a href="msteams://teams.microsoft.com/l/chat/0/0?users=tsoares@rzxtecnologia.com.br" class="section-button">TEAMS</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Second Row: PAE Sections -->
+                    <div class="second-row">
+                        <!-- PAE-002 Section -->
+                        <div class="section-card pae-section">
+                            <div class="section-icon">🗼</div>
+                            <h2 class="section-title">PAE-002</h2>
+                            <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-002</p>
+                            <div class="section-buttons">
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/d138867b20ca414a86f22e9cbb050b18" class="section-button">COMPANY MAN</a>
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/09b6d38f1f0147b0bf48fd7000b2e718" class="section-button">PERFORADOR</a>
+                                <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingPAE002.html" class="section-button">RANKING PAE-002</a>
+                            </div>
+                        </div>
+
+                        <!-- PAE-003 Section -->
+                        <div class="section-card pae-section">
+                            <div class="section-icon">🗼</div>
+                            <h2 class="section-title">PAE-003</h2>
+                            <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-003</p>
+                            <div class="section-buttons">
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/5a9b8862796b4b2381bd1089aa751e5d" class="section-button">COMPANY MAN</a>
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/d77fda4cb3e249b9963c00b0277cb661" class="section-button">PERFORADOR</a>
+                                <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingPAE003.html" class="section-button">RANKING PAE-003</a>
+                            </div>
+                        </div>
+
+                        <!-- PAE-005 Section -->
+                        <div class="section-card pae-section">
+                            <div class="section-icon">🗼</div>
+                            <h2 class="section-title">PAE-005</h2>
+                            <p class="section-desc">Enlaces para pantallas de monitoreo en tiempo real personalizadas para la plataforma PAE-005</p>
+                            <div class="section-buttons">
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/d3bdd50503064d9e9e331804a58e3714" class="section-button">COMPANY MAN</a>
+                                <a href="https://wonderdatalabs.grafana.net/public-dashboards/4847257b5db940f7a70c1ee99d383eb7" class="section-button">PERFORADOR</a>
+                                <a href="https://rzxtecnologia.github.io/rzx.panamerican/RankingPAE005.html" class="section-button">RANKING PAE-005</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer with Small Logo -->
+            <footer class="footer">
+                <div class="footer-logo-section">
+                    <img src="images/rzx_logo.png" alt="Logo Secundario" class="small-logo">
+                </div>
+                <p class="footer-text">&copy; 2025 RZX Tecnología. Todos los derechos reservados.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Authentication settings
+        const COMPANY_DOMAIN = ['@pan-energy.com', '@rzxtecnologia.com.br'];
+        const COMPANY_PASSWORD = 'XPD2024';
+
+                
+        // Additional specific user credentials (optional)
+        const specificCredentials = {
+            'admin': 'pae2025',
+            'supervisor': 'supervisor123'
+        };
+
+        // Check if user is already logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                showDashboard();
+            }
+        });
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            let isValidLogin = false;
+            
+            // Check if it's a company email with company password
+            if (username.toLowerCase().endsWith(COMPANY_DOMAIN.toLowerCase()) && password === COMPANY_PASSWORD) {
+                isValidLogin = true;
+            }
+            // Check specific credentials
+            else if (specificCredentials[username] && specificCredentials[username] === password) {
+                isValidLogin = true;
+            }
+            
+            if (isValidLogin) {
+                // Login successful
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+                showDashboard();
+            } else {
+                // Login failed
+                errorMessage.style.display = 'block';
+                document.getElementById('password').value = '';
+                
+                // Hide error message after 3 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainDashboard').style.display = 'block';
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('mainDashboard').style.display = 'none';
+            
+            // Clear form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Auto logout after 8 hours (optional)
+        setTimeout(() => {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                logout();
+                alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
+            }
+        }, 8 * 60 * 60 * 1000); // 8 hours
+    </script>
 </body>
 </html>
