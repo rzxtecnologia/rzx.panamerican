@@ -291,7 +291,7 @@
             margin-bottom: 5px;
         }
 
-        .driller-turno {
+        .driller-id {
             font-size: 0.75rem;
             opacity: 0.7;
             color: #94a3b8;
@@ -566,7 +566,9 @@
                     <label class="filter-label">Plataforma</label>
                     <select id="rig-filter" class="filter-select">
                         <option value="all">Todas las Plataformas</option>
-                        <!-- Options will be populated dynamically -->
+                        <option value="PAE-002">PAE-002</option>
+                        <option value="PAE-003">PAE-003</option>
+                        <option value="PAE-005">PAE-005</option>
                     </select>
                 </div>
                 <div class="filter-group">
@@ -644,269 +646,52 @@
         </footer>
     </div>
 
-    <!-- DataManager JS -->
     <script>
-        (function() {
-            class DataManager {
-                constructor() {
-                    this.rawData = [];
-                    this.processedData = [];
-                    this.lastUpdated = null;
-                    this.csvPath = 'data/ranking_data.csv';
-                }
+        // Sample comprehensive database structure
+        const sampleDatabase = {
+            drillers: [
+                { id: "D001", name: "Juan", surname: "Pérez", employeeId: "EMP001" },
+                { id: "D002", name: "Carlos", surname: "Rodriguez", employeeId: "EMP002" },
+                { id: "D003", name: "Miguel", surname: "González", employeeId: "EMP003" },
+                { id: "D004", name: "Roberto", surname: "Martinez", employeeId: "EMP004" },
+                { id: "D005", name: "Diego", surname: "Fernández", employeeId: "EMP005" },
+                { id: "D006", name: "Andrés", surname: "López", employeeId: "EMP006" },
+                { id: "D007", name: "Pablo", surname: "Sánchez", employeeId: "EMP007" },
+                { id: "D008", name: "Fernando", surname: "Torres", employeeId: "EMP008" }
+            ],
+            dailyRecords: [
+                // Recent records for January 2025
+                { drillerId: "D001", date: "2025-01-10", rig: "PAE-002", shift: "day", totalPoints: 95, tasksCompleted: 8 },
+                { drillerId: "D001", date: "2025-01-11", rig: "PAE-002", shift: "day", totalPoints: 88, tasksCompleted: 7 },
+                { drillerId: "D001", date: "2025-01-12", rig: "PAE-002", shift: "day", totalPoints: 92, tasksCompleted: 9 },
+                
+                { drillerId: "D002", date: "2025-01-10", rig: "PAE-003", shift: "night", totalPoints: 89, tasksCompleted: 6 },
+                { drillerId: "D002", date: "2025-01-11", rig: "PAE-003", shift: "night", totalPoints: 94, tasksCompleted: 8 },
+                { drillerId: "D002", date: "2025-01-13", rig: "PAE-003", shift: "night", totalPoints: 91, tasksCompleted: 7 },
+                
+                { drillerId: "D003", date: "2025-01-09", rig: "PAE-005", shift: "day", totalPoints: 87, tasksCompleted: 5 },
+                { drillerId: "D003", date: "2025-01-10", rig: "PAE-005", shift: "day", totalPoints: 93, tasksCompleted: 9 },
+                { drillerId: "D003", date: "2025-01-12", rig: "PAE-005", shift: "day", totalPoints: 96, tasksCompleted: 10 },
+                
+                { drillerId: "D004", date: "2025-01-08", rig: "PAE-002", shift: "night", totalPoints: 85, tasksCompleted: 6 },
+                { drillerId: "D004", date: "2025-01-09", rig: "PAE-002", shift: "night", totalPoints: 90, tasksCompleted: 7 },
+                { drillerId: "D004", date: "2025-01-11", rig: "PAE-002", shift: "night", totalPoints: 88, tasksCompleted: 8 },
+                
+                { drillerId: "D005", date: "2025-01-10", rig: "PAE-003", shift: "day", totalPoints: 84, tasksCompleted: 5 },
+                { drillerId: "D005", date: "2025-01-12", rig: "PAE-003", shift: "day", totalPoints: 89, tasksCompleted: 7 },
+                
+                { drillerId: "D006", date: "2025-01-09", rig: "PAE-005", shift: "night", totalPoints: 92, tasksCompleted: 8 },
+                { drillerId: "D006", date: "2025-01-11", rig: "PAE-005", shift: "night", totalPoints: 87, tasksCompleted: 6 },
+                { drillerId: "D006", date: "2025-01-13", rig: "PAE-005", shift: "night", totalPoints: 94, tasksCompleted: 9 },
+                
+                { drillerId: "D007", date: "2025-01-08", rig: "PAE-002", shift: "day", totalPoints: 91, tasksCompleted: 7 },
+                { drillerId: "D007", date: "2025-01-10", rig: "PAE-002", shift: "day", totalPoints: 86, tasksCompleted: 6 },
+                
+                { drillerId: "D008", date: "2025-01-11", rig: "PAE-003", shift: "night", totalPoints: 93, tasksCompleted: 8 },
+                { drillerId: "D008", date: "2025-01-12", rig: "PAE-003", shift: "night", totalPoints: 88, tasksCompleted: 7 }
+            ]
+        };
 
-                async loadCSVData() {
-                    try {
-                        const response = await fetch(this.csvPath + '?' + Date.now()); // cachebusting
-                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                        const csvText = await response.text();
-                        this.rawData = this.parseCSV(csvText);
-                        this.processedData = this.processRawData(this.rawData);
-                        this.lastUpdated = new Date();
-                        return this.processedData;
-                    } catch (error) {
-                        console.error('Error loading CSV:', error);
-                        throw new Error('Base de dados não disponível');
-                    }
-                }
-
-                parseCSV(csvText) {
-                    let lines = csvText.trim().split(/\r?\n/);
-                    if (lines.length < 2) throw new Error('CSV file is empty or invalid');
-                    
-                    let delimiter = (lines[0].includes(';') && !lines[0].includes(',')) ? ';' : ',';
-                    let headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
-                    
-                    console.log('CSV Headers found:', headers);
-                    
-                    const data = [];
-                    for (let i = 1; i < lines.length; i++) {
-                        let values = lines[i].split(delimiter).map(v => v.trim());
-                        if (values.length < headers.length || !values[0] || !values[1]) continue; // Skip invalid rows
-                        
-                        let obj = {
-                            turno: values[0] || "",
-                            nombre: values[1] || "",
-                            apellido: values[2] || "",
-                            plataforma: values[3] || "",
-                            pozo: values[4] || "",
-                            fecha: this.parseDateRaw(values[5]),
-                            guardia: values[6] || "",
-                            puntuaciongeneraldeldia: parseFloat(values[7]) || 0,
-                            numerodeactividadesdeldia: parseInt(values[8]) || 0,
-                            puntuaciondelperforador: parseFloat(values[9]) || 0,
-                            numerodeactividadesdelperforador: parseInt(values[10]) || 0
-                        };
-                        data.push(obj);
-                    }
-                    console.log('Parsed data sample:', data.slice(0, 3));
-                    return data;
-                }
-
-                processRawData(rawData) {
-                    return rawData.map(item => {
-                        const nombreCompleto = (item.nombre || "") + " " + (item.apellido || "");
-                        return {
-                            id: (item.turno || "unknown").toLowerCase().replace(/\s+/g, '_'),
-                            turno: item.turno || "",
-                            nombre: item.nombre || "",
-                            apellido: item.apellido || "",
-                            nombreCompleto: nombreCompleto,
-                            plataforma: item.plataforma || "",
-                            pozo: item.pozo || "",
-                            fecha: item.fecha,
-                            guardia: item.guardia || "",
-                            puntuaciongeneraldeldia: item.puntuaciongeneraldeldia || 0,
-                            numerodeactividadesdeldia: item.numerodeactividadesdeldia || 0,
-                            puntuaciondelperforador: item.puntuaciondelperforador || 0,
-                            numerodeactividadesdelperforador: item.numerodeactividadesdelperforador || 0
-                        }
-                    });
-                }
-
-                parseDateRaw(dateString) {
-                    if (!dateString) return null;
-                    dateString = dateString.trim();
-                    let d = null;
-                    
-                    // YYYY-MM-DD
-                    if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
-                        d = new Date(dateString.substr(0,10));
-                    }
-                    // DD/MM/YYYY
-                    else if (/^\d{2}\/\d{2}\/\d{4}/.test(dateString)) {
-                        let [d1, m1, y1] = dateString.split("/");
-                        d = new Date(+y1, +m1 - 1, +d1);
-                    }
-                    // DD-MM-YYYY
-                    else if (/^\d{2}-\d{2}-\d{4}/.test(dateString)) {
-                        let [d1, m1, y1] = dateString.split("-");
-                        d = new Date(+y1, +m1 - 1, +d1);
-                    }
-                    if (!d || isNaN(d.getTime())) {
-                        d = new Date(dateString);
-                    }
-                    if (isNaN(d.getTime())) return null;
-                    
-                    d.setHours(0,0,0,0);
-                    return d;
-                }
-
-                // Get unique platforms for filter dropdown
-                getUniquePlatforms() {
-                    const platforms = new Set();
-                    this.processedData.forEach(item => {
-                        if (item.plataforma) {
-                            platforms.add(item.plataforma);
-                        }
-                    });
-                    return Array.from(platforms).sort();
-                }
-
-                // Filter data based on criteria
-                filterData(filters) {
-                    const now = new Date();
-                    now.setHours(0,0,0,0);
-                    
-                    return this.processedData.filter(row => {
-                        // Date filter based on period
-                        let dateMatch = true;
-                        if (row.fecha) {
-                            switch (filters.period) {
-                                case 'week':
-                                    const weekStart = new Date(now.getTime() - (now.getDay() * 86400000));
-                                    const weekEnd = new Date(weekStart.getTime() + (6 * 86400000));
-                                    dateMatch = row.fecha >= weekStart && row.fecha <= weekEnd;
-                                    break;
-                                case 'month':
-                                    dateMatch = row.fecha.getMonth() === now.getMonth() && 
-                                              row.fecha.getFullYear() === now.getFullYear();
-                                    break;
-                                case 'quarter':
-                                    const currentQuarter = Math.floor(now.getMonth() / 3);
-                                    const recordQuarter = Math.floor(row.fecha.getMonth() / 3);
-                                    dateMatch = recordQuarter === currentQuarter && 
-                                              row.fecha.getFullYear() === now.getFullYear();
-                                    break;
-                                case 'year':
-                                    dateMatch = row.fecha.getFullYear() === now.getFullYear();
-                                    break;
-                            }
-                        }
-
-                        // Specific date filter
-                        if (filters.date) {
-                            const filterDate = new Date(filters.date);
-                            filterDate.setHours(0,0,0,0);
-                            dateMatch = row.fecha && row.fecha.getTime() === filterDate.getTime();
-                        }
-
-                        // Platform filter
-                        const platformMatch = filters.rig === 'all' || 
-                                            (row.plataforma && row.plataforma.toUpperCase() === filters.rig.toUpperCase());
-
-                        // Shift filter (mapping guardia to day/night)
-                        let shiftMatch = true;
-                        if (filters.shift !== 'all') {
-                            const guardiaLower = (row.guardia || '').toLowerCase();
-                            if (filters.shift === 'day') {
-                                shiftMatch = guardiaLower.includes('dia') || guardiaLower.includes('day');
-                            } else if (filters.shift === 'night') {
-                                shiftMatch = guardiaLower.includes('noche') || guardiaLower.includes('night');
-                            }
-                        }
-
-                        return dateMatch && platformMatch && shiftMatch;
-                    });
-                }
-
-                // Generate ranking with weighted average calculation like PAE-002
-                generateRanking(filters) {
-                    const filteredData = this.filterData(filters);
-                    
-                    if (filteredData.length === 0) {
-                        return [];
-                    }
-
-                    // Group by individual driller (nombre + apellido)
-                    const drillerMap = new Map();
-                    
-                    filteredData.forEach(row => {
-                        const key = `${row.nombre}_${row.apellido}`.toLowerCase();
-                        
-                        if (!drillerMap.has(key)) {
-                            drillerMap.set(key, {
-                                nombre: row.nombre,
-                                apellido: row.apellido,
-                                nombreCompleto: row.nombreCompleto,
-                                turno: row.turno,
-                                totalWeightedPoints: 0,
-                                totalActivities: 0,
-                                totalShifts: 0,
-                                activeDays: new Set(),
-                                platforms: new Set(),
-                                shifts: new Set(),
-                                latestActivity: row.fecha
-                            });
-                        }
-                        
-                        const rec = drillerMap.get(key);
-                        
-                        // Use same calculation as PAE-002: weighted points by activities
-                        rec.totalWeightedPoints += (row.puntuaciondelperforador * row.numerodeactividadesdelperforador);
-                        rec.totalActivities += row.numerodeactividadesdelperforador;
-                        rec.totalShifts += 1;
-                        
-                        // Track unique data
-                        if (row.fecha) rec.activeDays.add(row.fecha.toDateString());
-                        if (row.plataforma) rec.platforms.add(row.plataforma);
-                        if (row.guardia) rec.shifts.add(row.guardia);
-                        
-                        // Keep most recent info
-                        if (row.fecha && rec.latestActivity < row.fecha) {
-                            rec.latestActivity = row.fecha;
-                            rec.turno = row.turno;
-                        }
-                    });
-
-                    // Convert to array and calculate weighted average
-                    const rankingArray = Array.from(drillerMap.values()).map(rec => ({
-                        nombre: rec.nombre,
-                        apellido: rec.apellido,
-                        nombreCompleto: rec.nombreCompleto,
-                        turno: rec.turno,
-                        weightedAverage: rec.totalActivities > 0 ? rec.totalWeightedPoints / rec.totalActivities : 0,
-                        totalActivities: rec.totalActivities,
-                        totalShifts: rec.totalShifts,
-                        activeDays: rec.activeDays.size,
-                        mainPlatform: Array.from(rec.platforms)[0] || '',
-                        platforms: Array.from(rec.platforms),
-                        mainShift: this.getMostCommonShift(Array.from(rec.shifts)),
-                        latestActivity: rec.latestActivity
-                    }));
-
-                    // Sort by weighted average (descending)
-                    return rankingArray.sort((a, b) => b.weightedAverage - a.weightedAverage);
-                }
-
-                getMostCommonShift(shifts) {
-                    if (shifts.length === 0) return '';
-                    
-                    const shiftCounts = {};
-                    shifts.forEach(shift => {
-                        shiftCounts[shift] = (shiftCounts[shift] || 0) + 1;
-                    });
-                    
-                    return Object.keys(shiftCounts).reduce((a, b) => 
-                        shiftCounts[a] > shiftCounts[b] ? a : b
-                    );
-                }
-            }
-            window.dataManager = new DataManager();
-        })();
-    </script>
-
-    <script>
         // Current filters
         let currentFilters = {
             period: 'month',
@@ -915,20 +700,137 @@
             date: null
         };
 
-        // Populate platform dropdown
-        function populatePlatformDropdown() {
-            const rigFilter = document.getElementById('rig-filter');
-            const platforms = window.dataManager.getUniquePlatforms();
+        // Calculate weighted average for a period
+        function calculateWeightedAverage(records) {
+            if (records.length === 0) return 0;
             
-            // Clear existing options except "all"
-            rigFilter.innerHTML = '<option value="all">Todas las Plataformas</option>';
+            let totalWeightedPoints = 0;
+            let totalWeight = 0;
             
-            platforms.forEach(platform => {
-                const option = document.createElement('option');
-                option.value = platform;
-                option.textContent = platform;
-                rigFilter.appendChild(option);
+            records.forEach(record => {
+                const weight = record.tasksCompleted; // Weight by number of tasks
+                totalWeightedPoints += record.totalPoints * weight;
+                totalWeight += weight;
             });
+            
+            return totalWeight > 0 ? Math.round(totalWeightedPoints / totalWeight) : 0;
+        }
+
+        // Filter records based on current filters
+        function filterRecords(records) {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth();
+            const currentWeek = getWeekNumber(now);
+            
+            return records.filter(record => {
+                const recordDate = new Date(record.date);
+                
+                // Period filter
+                let periodMatch = true;
+                switch (currentFilters.period) {
+                    case 'week':
+                        periodMatch = getWeekNumber(recordDate) === currentWeek && 
+                                    recordDate.getFullYear() === currentYear;
+                        break;
+                    case 'month':
+                        periodMatch = recordDate.getMonth() === currentMonth && 
+                                    recordDate.getFullYear() === currentYear;
+                        break;
+                    case 'quarter':
+                        const currentQuarter = Math.floor(currentMonth / 3);
+                        const recordQuarter = Math.floor(recordDate.getMonth() / 3);
+                        periodMatch = recordQuarter === currentQuarter && 
+                                    recordDate.getFullYear() === currentYear;
+                        break;
+                    case 'year':
+                        periodMatch = recordDate.getFullYear() === currentYear;
+                        break;
+                }
+                
+                // Rig filter
+                const rigMatch = currentFilters.rig === 'all' || record.rig === currentFilters.rig;
+                
+                // Shift filter
+                const shiftMatch = currentFilters.shift === 'all' || record.shift === currentFilters.shift;
+                
+                // Date filter
+                const dateMatch = !currentFilters.date || record.date === currentFilters.date;
+                
+                return periodMatch && rigMatch && shiftMatch && dateMatch;
+            });
+        }
+
+        // Get week number
+        function getWeekNumber(date) {
+            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+            const dayNum = d.getUTCDay() || 7;
+            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+            return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        }
+
+        // Generate ranking based on filtered data
+        function generateRanking() {
+            const filteredRecords = filterRecords(sampleDatabase.dailyRecords);
+            
+            // Group by driller
+            const drillerStats = {};
+            
+            filteredRecords.forEach(record => {
+                if (!drillerStats[record.drillerId]) {
+                    const driller = sampleDatabase.drillers.find(d => d.id === record.drillerId);
+                    drillerStats[record.drillerId] = {
+                        driller: driller,
+                        records: [],
+                        rigs: new Set(),
+                        shifts: new Set(),
+                        totalTasks: 0,
+                        activeDays: 0
+                    };
+                }
+                
+                drillerStats[record.drillerId].records.push(record);
+                drillerStats[record.drillerId].rigs.add(record.rig);
+                drillerStats[record.drillerId].shifts.add(record.shift);
+                drillerStats[record.drillerId].totalTasks += record.tasksCompleted;
+                drillerStats[record.drillerId].activeDays++;
+            });
+            
+            // Calculate final ranking
+            const ranking = Object.values(drillerStats).map(stats => {
+                const weightedAverage = calculateWeightedAverage(stats.records);
+                const mainRig = Array.from(stats.rigs)[0]; // Primary rig
+                const mainShift = getMostCommonShift(stats.records);
+                
+                return {
+                    driller: stats.driller,
+                    points: weightedAverage,
+                    totalTasks: stats.totalTasks,
+                    activeDays: stats.activeDays,
+                    mainRig: mainRig,
+                    mainShift: mainShift,
+                    rigs: Array.from(stats.rigs),
+                    shifts: Array.from(stats.shifts)
+                };
+            });
+            
+            // Sort by points (descending)
+            ranking.sort((a, b) => b.points - a.points);
+            
+            return ranking;
+        }
+
+        // Get most common shift for a driller
+        function getMostCommonShift(records) {
+            const shiftCounts = {};
+            records.forEach(record => {
+                shiftCounts[record.shift] = (shiftCounts[record.shift] || 0) + 1;
+            });
+            
+            return Object.keys(shiftCounts).reduce((a, b) => 
+                shiftCounts[a] > shiftCounts[b] ? a : b
+            );
         }
 
         // Display ranking
@@ -965,13 +867,14 @@
                 // Determine shift indicator
                 let shiftClass = 'shift-mixed';
                 let shiftText = 'Mixto';
-                const mainShiftLower = (item.mainShift || '').toLowerCase();
-                if (mainShiftLower.includes('dia') || mainShiftLower.includes('day')) {
-                    shiftClass = 'shift-day';
-                    shiftText = 'Día';
-                } else if (mainShiftLower.includes('noche') || mainShiftLower.includes('night')) {
-                    shiftClass = 'shift-night';
-                    shiftText = 'Noche';
+                if (item.shifts.length === 1) {
+                    if (item.mainShift === 'day') {
+                        shiftClass = 'shift-day';
+                        shiftText = 'Día';
+                    } else {
+                        shiftClass = 'shift-night';
+                        shiftText = 'Noche';
+                    }
                 }
 
                 return `
@@ -979,13 +882,13 @@
                         ${trophyIcon}
                         <div class="ranking-position ${positionClass}">#${position}</div>
                         <div class="driller-info">
-                            <div class="driller-name">${item.nombreCompleto}</div>
-                            <div class="driller-turno">${item.turno}</div>
+                            <div class="driller-name">${item.driller.name} ${item.driller.surname}</div>
+                            <div class="driller-id">ID: ${item.driller.employeeId}</div>
                         </div>
-                        <div class="rig-badge">${item.mainPlatform}</div>
+                        <div class="rig-badge">${item.mainRig}</div>
                         <div class="shift-indicator ${shiftClass} hide-mobile">${shiftText}</div>
-                        <div class="points-value">${item.weightedAverage.toFixed(1)}</div>
-                        <div class="tasks-count hide-mobile">${item.totalActivities}</div>
+                        <div class="points-value">${item.points.toLocaleString()}</div>
+                        <div class="tasks-count hide-mobile">${item.totalTasks}</div>
                         <div class="days-active hide-mobile">${item.activeDays}</div>
                     </div>
                 `;
@@ -994,17 +897,17 @@
             rankingList.innerHTML = rankingHTML;
             
             // Update statistics
-            const filteredData = window.dataManager.filterData(currentFilters);
-            updateStats(ranking, filteredData);
+            const filteredRecords = filterRecords(sampleDatabase.dailyRecords);
+            updateStats(ranking, filteredRecords);
         }
 
         // Update statistics
-        function updateStats(ranking, filteredData) {
+        function updateStats(ranking, records) {
             document.getElementById('total-drillers').textContent = ranking.length;
-            document.getElementById('total-tasks').textContent = filteredData.reduce((sum, r) => sum + r.numerodeactividadesdelperforador, 0);
+            document.getElementById('total-tasks').textContent = records.reduce((sum, r) => sum + r.tasksCompleted, 0);
             
             const avgPoints = ranking.length > 0 ? 
-                Math.round(ranking.reduce((sum, r) => sum + r.weightedAverage, 0) / ranking.length) : 0;
+                Math.round(ranking.reduce((sum, r) => sum + r.points, 0) / ranking.length) : 0;
             document.getElementById('avg-points').textContent = avgPoints;
             
             const now = new Date();
@@ -1046,11 +949,9 @@
         }
 
         // Load and display ranking
-        async function loadRanking() {
+        function loadRanking() {
             try {
-                await window.dataManager.loadCSVData();
-                populatePlatformDropdown();
-                const ranking = window.dataManager.generateRanking(currentFilters);
+                const ranking = generateRanking();
                 displayRanking(ranking);
                 updateSubtitle();
             } catch (error) {
@@ -1059,8 +960,6 @@
                     <div class="error-message">
                         <div>❌ Error al cargar los datos del ranking</div>
                         <small style="margin-top: 10px; opacity: 0.7;">Error: ${error.message}</small>
-                        <br><br>
-                        <small>Verifique si el archivo data/ranking_data.csv está disponible y contiene datos válidos</small>
                     </div>
                 `;
             }
@@ -1073,15 +972,13 @@
             currentFilters.shift = document.getElementById('shift-filter').value;
             currentFilters.date = document.getElementById('date-filter').value || null;
             
-            const ranking = window.dataManager.generateRanking(currentFilters);
-            displayRanking(ranking);
-            updateSubtitle();
+            loadRanking();
         }
 
         // Auto-refresh functionality
         function startAutoRefresh() {
-            // Refresh every 5 minutes (300000 ms)
-            setInterval(loadRanking, 300000);
+            // Refresh every 2 minutes (120000 ms)
+            setInterval(loadRanking, 120000);
         }
 
         // Initialize the page
@@ -1100,6 +997,11 @@
             
             // Start auto-refresh
             startAutoRefresh();
+        });
+
+        // Handle back button
+        document.querySelector('.back-button').addEventListener('click', (e) => {
+            // Allow normal navigation
         });
     </script>
 </body>

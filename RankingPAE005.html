@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOFTWARE GAMIFICATION - Ranking Perforadores</title>
     <style>
-        /* [COPY YOUR FULL CSS HERE - OMITTED FOR SPACE, TAILORED AS NEEDED] */
-        /* ... (keep your CSS unchanged) ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #0c1d29; min-height: 100vh; color: white; overflow-x: hidden;}
         .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; min-height: 100vh; display: flex; flex-direction: column; }
@@ -25,19 +23,20 @@
         .ranking-title { font-size: 2rem; font-weight: 700; color: #ffffff; margin-bottom: 10px; }
         .ranking-subtitle { font-size: 1rem; opacity: 0.8; color: #e2e8f0;}
         .ranking-table { background: #283f4a; border: 2px solid #134f62; border-top: none; border-radius: 0 0 20px 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(19, 79, 98, 0.2); }
-        .table-header { background: linear-gradient(135deg, #134f62, #1e5f73); display: grid; grid-template-columns: 80px 1fr 200px 120px; gap: 20px; padding: 20px 25px; font-weight: 700; font-size: 1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;}
-        .ranking-item { display: grid; grid-template-columns: 80px 1fr 200px 120px; gap: 20px; padding: 20px 25px; border-bottom: 1px solid rgba(19, 79, 98, 0.3); transition: all 0.3s ease; position: relative; align-items: center;}
+        .table-header { background: linear-gradient(135deg, #134f62, #1e5f73); display: grid; grid-template-columns: 80px 1fr 150px 150px; gap: 20px; padding: 20px 25px; font-weight: 700; font-size: 1rem; color: #ffffff; text-transform: uppercase; letter-spacing: 1px;}
+        .ranking-item { display: grid; grid-template-columns: 80px 1fr 150px 150px; gap: 20px; padding: 20px 25px; border-bottom: 1px solid rgba(19, 79, 98, 0.3); transition: all 0.3s ease; position: relative; align-items: center;}
         .ranking-item:hover { background: rgba(19, 79, 98, 0.2); transform: translateX(5px);}
         .ranking-item:last-child { border-bottom: none;}
         .ranking-position { font-size: 1.5rem; font-weight: 700; text-align: center; color: #4a90a4;}
         .ranking-position.gold { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);}
         .ranking-position.silver { color: #c0c0c0; text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);}
         .ranking-position.bronze { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);}
-        .driller-info { display: flex; flex-direction: column;}
-        .driller-name { font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 5px;}
-        .driller-rig { background: linear-gradient(135deg, #134f62, #4a90a4); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; display: inline-block; width: fit-content; box-shadow: 0 2px 8px rgba(19, 79, 98, 0.3);}
-        .driller-points { font-size: 1.4rem; font-weight: 700; color: #4a90a4; text-align: center; position: relative;}
-        .driller-points::after { content: 'pts'; font-size: 0.7rem; opacity: 0.7; margin-left: 5px;}
+        .team-info { display: flex; flex-direction: column;}
+        .team-name { font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-bottom: 5px;}
+        .team-rig { background: linear-gradient(135deg, #134f62, #4a90a4); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; text-align: center; display: inline-block; width: fit-content; box-shadow: 0 2px 8px rgba(19, 79, 98, 0.3);}
+        .team-points { font-size: 1.4rem; font-weight: 700; color: #4a90a4; text-align: center; position: relative;}
+        .team-points::after { content: 'pts'; font-size: 0.7rem; opacity: 0.7; margin-left: 5px;}
+        .team-shifts { font-size: 1.1rem; font-weight: 600; color: #ffffff; text-align: center;}
         .trophy-icon { position: absolute; left: -15px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; opacity: 0.8;}
         .trophy-icon.gold { color: #ffd700; }
         .trophy-icon.silver { color: #c0c0c0; }
@@ -51,8 +50,24 @@
         .small-logo { max-height: 80px; max-width: 200px; object-fit: contain; opacity: 0.8; transition: all 0.3s ease; margin-bottom: 15px; border-radius: 10px; box-shadow: 0 4px 15px rgba(19, 79, 98, 0.2);}
         .small-logo:hover { opacity: 1; transform: scale(1.05); box-shadow: 0 6px 25px rgba(19, 79, 98, 0.3);}
         .footer-text { font-size: 0.9rem; opacity: 0.6; color: #94a3b8; }
-        @media (max-width: 768px) { .page-title { font-size: 2.2rem; } .table-header, .ranking-item { grid-template-columns: 60px 1fr 80px 80px; gap: 15px; padding: 15px 20px;} .ranking-position { font-size: 1.2rem;} .driller-name { font-size: 1rem;} .driller-rig { font-size: 0.75rem; padding: 3px 8px;} .driller-points { font-size: 1.1rem;} .main-logo { max-height: 150px; max-width: 375px; } }
-        @media (max-width: 480px) { .container { padding: 0 15px; } .page-title { font-size: 1.8rem; } .table-header, .ranking-item { grid-template-columns: 50px 1fr 70px; gap: 10px; padding: 12px 15px; } .table-header .points-header, .driller-points { display: none; } .driller-name { font-size: 0.9rem; } .main-logo { max-height: 120px; max-width: 300px; } .small-logo { max-height: 60px; max-width: 150px; } }
+        @media (max-width: 768px) { 
+            .page-title { font-size: 2.2rem; } 
+            .table-header, .ranking-item { grid-template-columns: 60px 1fr 100px 100px; gap: 15px; padding: 15px 20px;} 
+            .ranking-position { font-size: 1.2rem;} 
+            .team-name { font-size: 1rem;} 
+            .team-rig { font-size: 0.75rem; padding: 3px 8px;} 
+            .team-points { font-size: 1.1rem;} 
+            .main-logo { max-height: 150px; max-width: 375px; } 
+        }
+        @media (max-width: 480px) { 
+            .container { padding: 0 15px; } 
+            .page-title { font-size: 1.8rem; } 
+            .table-header, .ranking-item { grid-template-columns: 50px 1fr 80px; gap: 10px; padding: 12px 15px; } 
+            .table-header .points-header, .team-points { display: none; } 
+            .team-name { font-size: 0.9rem; } 
+            .main-logo { max-height: 120px; max-width: 300px; } 
+            .small-logo { max-height: 60px; max-width: 150px; } 
+        }
         .bg-shapes { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden;}
         .bg-shape { position: absolute; background: rgba(19, 79, 98, 0.1); border-radius: 50%; animation: float 8s ease-in-out infinite; }
         .bg-shape:nth-child(1) { width: 120px; height: 120px; top: 10%; left: 5%; animation-delay: 0s;}
@@ -73,7 +88,7 @@
         <header class="header">
             <img src="images/pae_logo_branco.png" alt="Pan America Energy" class="main-logo">
             <h1 class="page-title">RANKING PERFORADORES</h1>
-            <p class="page-subtitle">CLASIFICACIÓN EN TIEMPO REAL POR PUNTOS</p>
+            <p class="page-subtitle">CLASSIFICAÇÃO EM TEMPO REAL POR PONTOS</p>
         </header>
 
         <!-- Navigation -->
@@ -85,16 +100,16 @@
         <main class="main-content">
             <div class="ranking-container">
                 <div class="ranking-header">
-                    <h2 class="ranking-title">🏆 TOP TURNOS <PAE-005></PAE-005></h2>
-                    <p class="ranking-subtitle">Clasificación PAE-005 - Puntos Totales Últimos 15 días</p>
+                    <h2 class="ranking-title">🏆 MEJORES TURNOS PAE-005</h2>
+                    <p class="ranking-subtitle">Classificação PAE-005 - Média Puntos Últimos 15 dias</p>
                 </div>
 
                 <div class="ranking-table">
                     <div class="table-header">
                         <div>POS</div>
                         <div>TURNO</div>
-                        <div>PLATAFORMA</div>
-                        <div class="points-header">PUNTOS TOTALES</div>
+                        <div>TOTAL&nbsp;GUARDIAS</div>
+                        <div class="points-header">PONTOS TOTAIS</div>
                     </div>
 
                     <div id="ranking-list">
@@ -116,9 +131,8 @@
         </footer>
     </div>
 
-    <!-- DataManager JS EMBEDDED AS MODULE-LIKE IN THIS FILE -->
+    <!-- DataManager JS -->
     <script>
-        // DataManager adapted as plain JS object and attached to window
         (function() {
             class DataManager {
                 constructor() {
@@ -138,84 +152,70 @@
                         this.lastUpdated = new Date();
                         return this.processedData;
                     } catch (error) {
-                        // Fallback sample data
-                        this.processedData = this.getFallbackData();
-                        this.lastUpdated = new Date();
-                        return this.processedData;
+                        console.error('Error loading CSV:', error);
+                        throw new Error('Base de dados não disponível');
                     }
                 }
 
                 parseCSV(csvText) {
-                    // Detect separator (support for ; as well)
                     let lines = csvText.trim().split(/\r?\n/);
+                    if (lines.length < 2) throw new Error('CSV file is empty or invalid');
+                    
                     let delimiter = (lines[0].includes(';') && !lines[0].includes(',')) ? ';' : ',';
                     let headers = lines[0].split(delimiter).map(h => h.trim().toLowerCase());
-                    // Try to map them (disambiguate columns)
-                    let colIndex = (name) => headers.findIndex(h => h.indexOf(name) !== -1);
-                    let idxEq    = colIndex('equipo');
-                    let idxNombre = colIndex('nombre');
-                    let idxApellido = colIndex('apellido');
-                    let idxPlataforma = colIndex('plataforma');
-                    let idxPozo = colIndex('pozo');
-                    let idxFecha = colIndex('fecha');
-                    let idxTurno = colIndex('turno') >= 0 ? colIndex('turno') : colIndex('guardia');
-                    let idxScoreGeneral = colIndex('puntuación general'); //allow acentos!
-                    if (idxScoreGeneral < 0) idxScoreGeneral = colIndex('score general');
-                    if (idxScoreGeneral < 0) idxScoreGeneral = colIndex('puntuacion general');
-                    let idxNumActividadesDia = colIndex('número de actividades del día');
-                    let idxScorePerforador = colIndex('puntuación del perforador');
-                    if (idxScorePerforador < 0) idxScorePerforador = colIndex('score perforador');
-                    let idxNumActividadesPerforador = colIndex('número de actividades del perforador');
-
+                    
+                    console.log('CSV Headers found:', headers);
+                    
                     const data = [];
                     for (let i = 1; i < lines.length; i++) {
                         let values = lines[i].split(delimiter).map(v => v.trim());
-                        if (values.length < headers.length) continue;
+                        if (values.length < headers.length || !values[0] || !values[1]) continue; // Skip invalid rows
+                        
                         let obj = {
-                            equipo: idxEq >= 0 ? values[idxEq] : "",
-                            nombre: idxNombre >= 0 ? values[idxNombre] : "",
-                            apellido: idxApellido >= 0 ? values[idxApellido] : "",
-                            plataforma: idxPlataforma >= 0 ? values[idxPlataforma] : "",
-                            pozo: idxPozo >= 0 ? values[idxPozo] : "",
-                            fecha: this.parseDateRaw(values[idxFecha]),
-                            turno: idxTurno >= 0 ? values[idxTurno] : "",
-                            scoreGeneral: idxScoreGeneral >= 0 ? parseFloat(values[idxScoreGeneral]) || 0 : 0,
-                            numActividadesDia: idxNumActividadesDia >= 0 ? parseInt(values[idxNumActividadesDia]) || 0 : 0,
-                            scorePerforador: idxScorePerforador >= 0 ? parseFloat(values[idxScorePerforador]) || 0 : 0,
-                            numActividadesPerforador: idxNumActividadesPerforador >= 0 ? parseInt(values[idxNumActividadesPerforador]) || 0 : 0,
+                            turno: values[0] || "",
+                            nombre: values[1] || "",
+                            apellido: values[2] || "",
+                            plataforma: values[3] || "",
+                            pozo: values[4] || "",
+                            fecha: this.parseDateRaw(values[5]),
+                            guardia: values[6] || "",
+                            puntuaciongeneraldeldia: parseFloat(values[7]) || 0,
+                            numerodeactividadesdeldia: parseInt(values[8]) || 0,
+                            puntuaciondelperforador: parseFloat(values[9]) || 0,
+                            numerodeactividadesdelperforador: parseInt(values[10]) || 0
                         };
                         data.push(obj);
                     }
+                    console.log('Parsed data sample:', data.slice(0, 3));
                     return data;
                 }
 
                 processRawData(rawData) {
                     return rawData.map(item => {
                         const nombreCompleto = (item.nombre || "") + " " + (item.apellido || "");
-                        // Use plataforma (csv) for rig
                         return {
-                            id: (item.nombre + "_" + item.apellido).toLowerCase().replace(/\s+/g, '_'),
+                            id: (item.turno || "unknown").toLowerCase().replace(/\s+/g, '_'),
+                            turno: item.turno || "",
                             nombre: item.nombre || "",
                             apellido: item.apellido || "",
                             nombreCompleto: nombreCompleto,
                             plataforma: item.plataforma || "",
                             pozo: item.pozo || "",
                             fecha: item.fecha,
-                            turno: item.turno || "",
-                            scoreGeneral: item.scoreGeneral || 0,
-                            numActividadesDia: item.numActividadesDia || 0,
-                            scorePerforador: item.scorePerforador || 0,
-                            numActividadesPerforador: item.numActividadesPerforador || 0,
-                            puntosTotales: (item.scoreGeneral || 0) + (item.scorePerforador || 0)
+                            guardia: item.guardia || "",
+                            puntuaciongeneraldeldia: item.puntuaciongeneraldeldia || 0,
+                            numerodeactividadesdeldia: item.numerodeactividadesdeldia || 0,
+                            puntuaciondelperforador: item.puntuaciondelperforador || 0,
+                            numerodeactividadesdelperforador: item.numerodeactividadesdelperforador || 0
                         }
                     });
                 }
 
-                // Robust date parser for DD/MM/YYYY, YYYY-MM-DD, etc.
                 parseDateRaw(dateString) {
                     if (!dateString) return null;
                     dateString = dateString.trim();
                     let d = null;
+                    
                     // YYYY-MM-DD
                     if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
                         d = new Date(dateString.substr(0,10));
@@ -230,63 +230,93 @@
                         let [d1, m1, y1] = dateString.split("-");
                         d = new Date(+y1, +m1 - 1, +d1);
                     }
-                    // Try parsing directly if above fails
                     if (!d || isNaN(d.getTime())) {
                         d = new Date(dateString);
                     }
                     if (isNaN(d.getTime())) return null;
-                    // For filtering, we always use the date only (00:00)
+                    
                     d.setHours(0,0,0,0);
                     return d;
                 }
 
-                getFallbackData() {
-                    return [
-                        { id: "juan_perez", nombre: "Juan", apellido: "Pérez", nombreCompleto: "Juan Pérez", plataforma: "PAE-002", pozo: "Pozo 1", fecha: new Date(2024,2,2), turno: "Tarde", scoreGeneral: 75, scorePerforador: 80, puntosTotales: 155 },
-                        { id: "ana_garcia", nombre: "Ana", apellido: "García", nombreCompleto: "Ana García", plataforma: "PAE-002", pozo: "Pozo 1", fecha: new Date(2024,2,6), turno: "Mañana", scoreGeneral: 75, scorePerforador: 70, puntosTotales: 145 },
-                        { id: "luis_lopez", nombre: "Luis", apellido: "López", nombreCompleto: "Luis López", plataforma: "PAE-002", pozo: "Pozo 2", fecha: new Date(2024,2,7), turno: "Tarde", scoreGeneral: 95, scorePerforador: 50, puntosTotales: 145 },
-                        { id: "pedro_ramirez", nombre: "Pedro", apellido: "Ramirez", nombreCompleto: "Pedro Ramirez", plataforma: "PAE-002", pozo: "Pozo 10", fecha: new Date(2024,1,19), turno: "Noche", scoreGeneral: 60, scorePerforador: 75, puntosTotales: 135 }
-                    ];
-                }
-
-                // Returns ranking array for the last <days> days, one rig, summed by driller
                 getRankingForRigLastDays(rig, days = 15) {
                     const now = new Date();
                     now.setHours(0,0,0,0);
                     const msInDay = 86400000;
                     const minDate = new Date(now.getTime() - (days-1)*msInDay);
 
-                    let arr = this.processedData && this.processedData.length > 0
-                        ? this.processedData
-                        : this.getFallbackData();
+                    if (!this.processedData || this.processedData.length === 0) {
+                        throw new Error('No data available');
+                    }
 
-                    // Filter only selected rig and last <days>
-                    arr = arr.filter(row => (
-                        (typeof row.plataforma === "string" && row.plataforma.toUpperCase() === String(rig).toUpperCase())
-                        && row.fecha && (row.fecha >= minDate && row.fecha <= now)
-                    ));
+                    console.log(`Filtering data for rig: ${rig}, from ${minDate.toISOString()} to ${now.toISOString()}`);
+                    
+                    // Filter by rig and date range
+                    let filteredData = this.processedData.filter(row => {
+                        const rigMatch = (typeof row.plataforma === "string" && row.plataforma.toUpperCase() === String(rig).toUpperCase());
+                        const dateMatch = row.fecha && (row.fecha >= minDate && row.fecha <= now);
+                        return rigMatch && dateMatch;
+                    });
 
-                    // Group by driller id
+                    console.log(`Filtered data count: ${filteredData.length}`);
+                    
+                    if (filteredData.length === 0) {
+                        return [];
+                    }
+
+                    // Group by turno (team name)
                     let rankingMap = new Map();
-                    for (let row of arr) {
-                        let id = row.id || ((row.nombre + "_" + row.apellido).toLowerCase().replace(/\s+/g, '_'));
-                        if (!rankingMap.has(id)) {
-                            rankingMap.set(id, {
-                                name: row.nombre,
-                                surname: row.apellido,
+                    for (let row of filteredData) {
+                        let key = row.turno;
+                        if (!key || key.trim() === '') continue; // Skip empty turno names
+                        
+                        if (!rankingMap.has(key)) {
+                            rankingMap.set(key, {
+                                turno: row.turno,
                                 rig: row.plataforma,
-                                points: 0,
-                                latestActivity: row.fecha
+                                totalWeightedPoints: 0,
+                                totalActivities: 0,
+                                totalShifts: 0,
+                                latestActivity: row.fecha,
+                                drillerNames: new Set() // Track unique driller names in this team
                             });
                         }
-                        let rec = rankingMap.get(id);
-                        rec.points += Number(row.puntosTotales || 0);
-                        // Keep the most recent rig and activity
-                        if(row.fecha && rec.latestActivity < row.fecha){ rec.rig = row.plataforma; rec.latestActivity=row.fecha;}
+                        
+                        let rec = rankingMap.get(key);
+                        
+                        // Add weighted points and activities
+                        rec.totalWeightedPoints += (row.puntuaciondelperforador * row.numerodeactividadesdelperforador);
+                        rec.totalActivities += row.numerodeactividadesdelperforador;
+                        rec.totalShifts += 1;
+                        
+                        // Track driller names
+                        if (row.nombreCompleto && row.nombreCompleto.trim() !== '') {
+                            rec.drillerNames.add(row.nombreCompleto.trim());
+                        }
+                        
+                        // Keep most recent rig and activity
+                        if(row.fecha && rec.latestActivity < row.fecha){ 
+                            rec.rig = row.plataforma; 
+                            rec.latestActivity = row.fecha;
+                        }
                     }
-                    // To array and sort by points desc
-                    const rankingArr = Array.from(rankingMap.values()).sort((a, b) => b.points - a.points);
-                    return rankingArr;
+
+                    console.log(`Teams found: ${rankingMap.size}`);
+
+                    // Convert to array and calculate final weighted average
+                    const rankingArr = Array.from(rankingMap.values()).map(rec => ({
+                        turno: rec.turno,
+                        rig: rec.rig,
+                        weightedAverage: rec.totalActivities > 0 ? rec.totalWeightedPoints / rec.totalActivities : 0,
+                        totalShifts: rec.totalShifts,
+                        latestActivity: rec.latestActivity,
+                        drillerNames: Array.from(rec.drillerNames).join(', ')
+                    }));
+
+                    console.log('Ranking data:', rankingArr);
+
+                    // Sort by weighted average (descending)
+                    return rankingArr.sort((a, b) => b.weightedAverage - a.weightedAverage);
                 }
             }
             window.dataManager = new DataManager();
@@ -300,29 +330,30 @@
             if (!data || data.length === 0) {
                 rankingList.innerHTML = `
                     <div class="error-message">
-                        📊 No hay datos de ranking disponibles
+                        📊 Nenhum dado de ranking disponível para PAE-005
                         <br><br>
-                        <small>Verifique que el archivo CSV esté disponible</small>
+                        <small>Verifique se existem dados para os últimos 15 dias</small>
                     </div>`;
                 return;
             }
 
-            const rankingHTML = data.map((driller, index) => {
+            const rankingHTML = data.map((team, index) => {
                 const pos = index + 1;
                 let positionClass = "", trophyIcon = "";
                 if(pos === 1) { positionClass="gold"; trophyIcon = '<span class="trophy-icon gold">🥇</span>'; }
                 else if(pos === 2) { positionClass="silver"; trophyIcon = '<span class="trophy-icon silver">🥈</span>'; }
                 else if(pos === 3) { positionClass="bronze"; trophyIcon = '<span class="trophy-icon bronze">🥉</span>'; }
+                
                 return `
                     <div class="ranking-item">
                         ${trophyIcon}
                         <div class="ranking-position ${positionClass}">#${pos}</div>
-                        <div class="driller-info">
-                            <div class="driller-name">${driller.name || ""} ${driller.surname || ""}</div>
-                            <div class="driller-rig">${driller.rig || ""}</div>
+                        <div class="team-info">
+                            <div class="team-name">${team.turno}</div>
+                            <div class="team-rig">${team.rig}</div>
                         </div>
-                        <div></div>
-                        <div class="driller-points">${driller.points.toLocaleString()}</div>
+                        <div class="team-shifts">${team.totalShifts}</div>
+                        <div class="team-points">${team.weightedAverage.toFixed(1)}</div>
                     </div>
                 `;
             }).join("");
@@ -335,13 +366,14 @@
                 const data = window.dataManager.getRankingForRigLastDays('PAE-005', 15);
                 displayRanking(data);
             } catch (error) {
+                console.error('Loading error:', error);
                 document.getElementById('ranking-list').innerHTML = `
                     <div class="error-message">
-                        ❌ Error al cargar los datos del ranking
+                        ❌ Base de dados não disponível
                         <br><br>
-                        <small>Error: ${error.message}</small>
+                        <small>Erro: ${error.message}</small>
                         <br><br>
-                        <small>Verifique que el archivo data/ranking_data.csv esté disponible</small>
+                        <small>Verifique se o arquivo data/ranking_data.csv está disponível e contém dados válidos</small>
                     </div>
                 `;
             }
@@ -353,8 +385,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadRankingData();
         });
-
-        // Optional: leave back button js as is (direct link)
     </script>
 </body>
 </html>
