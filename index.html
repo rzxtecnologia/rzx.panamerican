@@ -565,14 +565,14 @@
     <div id="loginScreen" class="login-container">
         <div class="login-box">
             <img src="images/pae_logo_branco.png" alt="Pan America Energy" class="login-logo">
-            <h1 class="login-title">ACCESO RESTRINGIDO</h1>
-            <p class="login-subtitle">Ingrese sus credenciales para continuar</p>
+            <h1 class="login-title">SOFTWARE GAMIFICATION</h1>
+            <p class="login-subtitle">Portal de accesos - Ingrese sus credenciales para continuar</p>
             
             <form class="login-form" onsubmit="handleLogin(event)">
-                <input type="email" id="username" class="login-input" placeholder="Email corporativo (@rzxtec.com)" required>
+                <input type="email" id="username" class="login-input" placeholder="Email Corporativo" required>
                 <input type="password" id="password" class="login-input" placeholder="Contraseña" required>
                 <button type="submit" class="login-button">INGRESAR</button>
-                <div id="errorMessage" class="error-message">Credenciales incorrectas. Use su email @rzxtec.com</div>
+                <div id="errorMessage" class="error-message">Credenciales incorrectas. Use su email corporativo</div>
             </form>
         </div>
     </div>
@@ -675,14 +675,13 @@
 
     <script>
         // Authentication settings
-        const COMPANY_DOMAIN = ['@pan-energy.com', '@rzxtecnologia.com.br'];
+        const COMPANY_DOMAINS = ['@pan-energy.com', '@rzxtecnologia.com.br'];
         const COMPANY_PASSWORD = 'XPD2024';
-
-                
+        
         // Additional specific user credentials (optional)
         const specificCredentials = {
-            'admin': 'rzxtec123',
-            'admin ': 'XPD2024'
+            'admin': 'pae2025',
+            'supervisor': 'supervisor123'
         };
 
         // Check if user is already logged in
@@ -716,14 +715,15 @@
                 localStorage.setItem('username', username);
                 showDashboard();
             } else {
-                // Login failed
+                // Login failed - show alert box
+                alert('ACCESO DENEGADO\n\nCredenciales incorrectas.\nVerifique su email corporativo y contraseña.');
                 errorMessage.style.display = 'block';
                 document.getElementById('password').value = '';
                 
-                // Hide error message after 3 seconds
+                // Hide error message after 5 seconds
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
-                }, 3000);
+                }, 5000);
             }
         }
 
